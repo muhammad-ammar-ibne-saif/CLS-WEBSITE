@@ -1,13 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
 import { tenures } from "@/data/site";
 
+const HallExperience = dynamic(() => import("@/components/hall/HallExperience"), {
+  ssr: false,
+});
+
 export default function HistoryPage() {
   const [open, setOpen] = useState(0);
+  const [hall, setHall] = useState(false);
 
   return (
     <SiteShell>
@@ -33,6 +39,15 @@ export default function HistoryPage() {
             <img className="calligraphy lg" src="/assets/calligraphy-history.png" alt="Urdu calligraphy" />
             <h2 className="headline">A Story of Legacy &amp; Love For Literature</h2>
           </div>
+          <div className="hall-cta">
+            <p className="body">
+              Step through the Wall of Heroes. Every door is a year. Behind it, the events of that tenure are scattered through a room you can walk.
+            </p>
+            <button className="btn btn-outline" type="button" onClick={() => setHall(true)}>
+              Enter the Hall of Years
+            </button>
+          </div>
+          {hall ? <HallExperience onClose={() => setHall(false)} /> : null}
           <div className="accordion">
             {tenures.map((tenure, index) => (
               <article className={`acc-item${open === index ? " open" : ""}`} key={tenure.title}>
