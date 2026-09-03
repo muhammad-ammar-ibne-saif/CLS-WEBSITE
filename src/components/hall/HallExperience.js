@@ -1,13 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import dynamic from "next/dynamic";
 import { getHallRooms } from "@/data/archive";
-
-const HallScene = dynamic(() => import("./HallScene"), {
-  ssr: false,
-  loading: () => <div className="hall-loading">Opening the archive…</div>,
-});
+import HallScene from "./HallScene";
 
 export default function HallExperience({ onClose }) {
   const rooms = useMemo(() => getHallRooms(), []);
@@ -36,6 +31,8 @@ export default function HallExperience({ onClose }) {
   return (
     <div className="hall-overlay" role="dialog" aria-label="Hall of Years">
       <HallScene rooms={rooms} inputRef={inputRef} onHud={setHud} onReady={() => setReady(true)} />
+
+      {!ready ? <div className="hall-loading">Opening the archive…</div> : null}
 
       <div className={`hall-veil${ready ? " in" : ""}`} />
 

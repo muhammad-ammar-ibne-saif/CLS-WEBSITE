@@ -1021,7 +1021,7 @@ button {
 .hall-plaque {
   position: absolute;
   left: 28px;
-  bottom: 168px;
+  bottom: 28px;
   width: min(360px, calc(100% - 56px));
   padding: 22px;
   background: rgba(18, 14, 10, 0.82);
@@ -1105,6 +1105,12 @@ button {
 .hall-pad-left { grid-column: 1; grid-row: 2; }
 .hall-pad-down { grid-column: 2; grid-row: 2; }
 .hall-pad-right { grid-column: 3; grid-row: 2; }
+
+@media (hover: hover) and (pointer: fine) {
+  .hall-pad {
+    display: none;
+  }
+}
 
 @media (max-width: 760px) {
   .hall-top {
