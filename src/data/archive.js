@@ -171,20 +171,24 @@ const rooms = [
 
 const byTitle = Object.fromEntries(rooms.map((room) => [room.title, room]));
 
-export function getHallRooms() {
-  return tenures.map((tenure, index) => {
+export function getHallRooms(tenuresList = tenures) {
+  return tenuresList.map((tenure, index) => {
     const archived = byTitle[tenure.title] || {};
-    const fallbackEvents = (tenure.events || []).map((name) => ({
-      name,
-      note: tenure.summary || "From the CLS archive.",
-    }));
+    const fromTenure = (tenure.events || [])
+      .map((item) =>
+        typeof item === "string"
+          ? { name: item, note: tenure.summary || "From the CLS archive." }
+          : { name: item.name, note: item.note || tenure.summary || "" },
+      )
+      .filter((item) => item.name);
+    const events = fromTenure.length ? fromTenure : archived.events || [];
 
     return {
-      id: `year-${index}`,
+      id: tenure._id || `year-${index}`,
       title: tenure.title,
       president: tenure.president,
       summary: tenure.summary || archived.mood || `Records under ${tenure.president}.`,
-      yearLabel: archived.yearLabel || String(2016 + index),
+      yearLabel: tenure.yearLabel || archived.yearLabel || String(2016 + index),
       plaque: archived.plaque || tenure.title,
       mood: archived.mood || "",
       palette: archived.palette || {
@@ -193,7 +197,7 @@ export function getHallRooms() {
         light: 0xffe6b0,
         fog: 0x1a1810,
       },
-      events: archived.events?.length ? archived.events : fallbackEvents,
+      events: events.length ? events : [{ name: "Archive in progress", note: "Records for this tenure are still being gathered." }],
     };
   });
 }

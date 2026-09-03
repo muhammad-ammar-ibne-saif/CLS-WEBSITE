@@ -1,20 +1,19 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
-import { writers } from "@/data/site";
+import { getPage, getWritings } from "@/server/queries/public";
 
 export const metadata = { title: "Writings" };
 
-export default function WritingsPage() {
+export default async function WritingsPage() {
+  const [page, writers] = await Promise.all([getPage("writings"), getWritings()]);
   return (
     <SiteShell>
       <section className="hero">
         <div className="wrap stack">
           <div className="stack center">
-            <h1 className="display">Our Writers Who Keep Our Legacy Alive</h1>
-            <p className="lede">
-              CLS has conducted 20+ poetry &amp; prose workshops and has hosted and trained more than 20 writers from its platform.
-            </p>
+            <h1 className="display">{page.title}</h1>
+            <p className="lede">{page.lede}</p>
           </div>
           <Ornament />
         </div>

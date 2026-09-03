@@ -1,21 +1,29 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
-import { events, members, writers } from "@/data/site";
+import { members as fallbackFaces } from "@/data/site";
+import { getEvents, getLeadership, getPage, getWritings } from "@/server/queries/public";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [page, events, writers, people] = await Promise.all([
+    getPage("home"),
+    getEvents(),
+    getWritings(),
+    getLeadership(),
+  ]);
+  const faces = people.filter((person) => person.avatar).map((person) => person.avatar);
+  const photos = faces.length ? faces : fallbackFaces;
+
   return (
     <SiteShell>
       <section className="hero pattern-edges">
         <div className="wrap stack">
           <div className="stack center">
-            <h1 className="display">Promoting Literature &amp; Poetry in COMSATS Lahore Since 2016.</h1>
-            <p className="lede">
-              Comsats Literary Society is a community of 200+ literates who have one vision in common and that is to promote &amp; spread love &amp; literature in campus
-            </p>
+            <h1 className="display">{page.title}</h1>
+            <p className="lede">{page.lede}</p>
           </div>
           <div className="photo-grid">
-            {members.map((src) => (
+            {photos.map((src) => (
               <img key={src} src={src} alt="" width={52} height={52} />
             ))}
           </div>
@@ -26,12 +34,14 @@ export default function HomePage() {
       <section className="section" id="events">
         <div className="wrap">
           <div className="events-head">
-            <img className="calligraphy lg" src="/assets/calligraphy-events.png" alt="Urdu calligraphy" />
-            <h2 className="headline">We’ve organized 100+ On-Campus Events. See Our Literary Legacy</h2>
+            {page.calligraphyImage ? (
+              <img className="calligraphy lg" src={page.calligraphyImage} alt="" />
+            ) : null}
+            <h2 className="headline">{page.headline}</h2>
           </div>
 
           <div className="video-stage">
-            <img className="frame" src="/assets/video-frame.png" alt="CLS event highlight" />
+            <img className="frame" src={page.heroImage || "/assets/video-frame.png"} alt="CLS event highlight" />
             <Link className="play-btn" href="/events" aria-label="See event details">
               <img src="/assets/play.svg" alt="" width={48} height={48} />
             </Link>
@@ -57,10 +67,8 @@ export default function HomePage() {
         <div className="wrap">
           <div className="writers-head">
             <img className="calligraphy" src="/assets/calligraphy-writers.png" alt="Urdu calligraphy" />
-            <h2 className="headline">Our Writers Who Keep Our Legacy Alive</h2>
-            <p className="lede">
-              CLS has conducted 20+ poetry &amp; prose workshops and has hosted and trained more than 20 writers from its platform.
-            </p>
+            <h2 className="headline">{page.secondaryHeadline}</h2>
+            <p className="lede">{page.secondaryLede}</p>
           </div>
           <div className="writer-list">
             {writers.map((writer) => (

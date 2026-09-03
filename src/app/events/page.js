@@ -1,20 +1,19 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
-import { events } from "@/data/site";
+import { getEvents, getPage } from "@/server/queries/public";
 
 export const metadata = { title: "Events" };
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const [page, events] = await Promise.all([getPage("events"), getEvents()]);
   return (
     <SiteShell>
       <section className="hero">
         <div className="wrap stack">
           <div className="stack center">
-            <h1 className="display">We’ve organized 100+ On-Campus Events. See Our Literary Legacy</h1>
-            <p className="lede">
-              From Shaam e Sukhan to Sham e Ghazal, CLS hosts the gatherings that keep literature public on campus.
-            </p>
+            <h1 className="display">{page.title}</h1>
+            <p className="lede">{page.lede}</p>
           </div>
           <Ornament />
         </div>
@@ -23,7 +22,7 @@ export default function EventsPage() {
       <section className="section" style={{ paddingTop: 40 }}>
         <div className="wrap">
           <div className="video-stage">
-            <img className="frame" src="/assets/video-frame.png" alt="CLS event highlight" />
+            <img className="frame" src={page.heroImage || "/assets/video-frame.png"} alt="" />
             <span className="play-btn" aria-hidden="true">
               <img src="/assets/play.svg" alt="" width={48} height={48} />
             </span>

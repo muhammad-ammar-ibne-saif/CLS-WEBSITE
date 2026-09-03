@@ -1,21 +1,22 @@
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
-import { constitutions } from "@/data/site";
+import { getConstitutions, getPage } from "@/server/queries/public";
 
 export const metadata = { title: "Constitution" };
 
-export default function ConstitutionPage() {
+export default async function ConstitutionPage() {
+  const [page, constitutions] = await Promise.all([getPage("constitution"), getConstitutions()]);
+  const download = constitutions[0]?.file || "/assets/constitution-thumb.png";
+
   return (
     <SiteShell>
       <section className="hero">
         <div className="wrap stack">
           <div className="stack center">
-            <h1 className="display">CLS Believes a Constitution Is More Than Rules. It&apos;s a Promise.</h1>
-            <p className="lede">
-              No matter you are the president, director, or member, everyone is accountable to the Constitution. We pursue our mission without concentrating power in the hands of a few.
-            </p>
+            <h1 className="display">{page.title}</h1>
+            <p className="lede">{page.lede}</p>
           </div>
-          <a className="btn btn-outline" href="/assets/constitution-thumb.png" download>
+          <a className="btn btn-outline" href={download} download>
             <img src="/assets/download.svg" alt="" width={16} height={16} />
             Download Constitution PDF
           </a>
@@ -26,11 +27,11 @@ export default function ConstitutionPage() {
       <section className="section" style={{ paddingTop: 40 }}>
         <div className="wrap">
           <div className="writers-head">
-            <img className="calligraphy" src="/assets/calligraphy-constitution.png" alt="Urdu calligraphy" />
-            <h2 className="headline">History of Constitutional Development</h2>
-            <p className="lede">
-              CLS has undergone 2 constitutional developments. The first constitution was made in 2016 while new amendments were made in 2026
-            </p>
+            {page.calligraphyImage ? (
+              <img className="calligraphy" src={page.calligraphyImage} alt="" />
+            ) : null}
+            <h2 className="headline">{page.headline}</h2>
+            <p className="lede">{page.secondaryLede}</p>
           </div>
           <div className="writer-list">
             {constitutions.map((item) => (

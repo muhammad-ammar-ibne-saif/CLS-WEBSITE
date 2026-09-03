@@ -4,8 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { getHallRooms } from "@/data/archive";
 import HallScene from "./HallScene";
 
-export default function HallExperience({ onClose }) {
-  const rooms = useMemo(() => getHallRooms(), []);
+export default function HallExperience({ onClose, tenures }) {
+  const rooms = useMemo(() => getHallRooms(tenures), [tenures]);
   const inputRef = useRef({ forward: false, back: false, left: false, right: false });
   const [hud, setHud] = useState({
     title: "Hall of Years",

@@ -1,21 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteShell from "@/components/SiteShell";
-import { writers } from "@/data/site";
-
-export function generateStaticParams() {
-  return writers.map((writer) => ({ slug: writer.slug }));
-}
+import { getWriting } from "@/server/queries/public";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const writer = writers.find((item) => item.slug === slug);
+  const writer = await getWriting(slug);
   return { title: writer?.name ?? "Writer" };
 }
 
 export default async function WriterPage({ params }) {
   const { slug } = await params;
-  const writer = writers.find((item) => item.slug === slug);
+  const writer = await getWriting(slug);
   if (!writer) notFound();
 
   return (
@@ -30,14 +26,16 @@ export default async function WriterPage({ params }) {
       </section>
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          {writer.pieces.map((piece) => (
+          {(writer.pieces || []).map((piece) => (
             <article className="piece" key={piece.title}>
               <p className="eyebrow">WRITING</p>
               <h2>{piece.title}</h2>
               <p className="meta">{writer.name}</p>
-              {piece.body.split("\n\n").map((para) => (
-                <p key={para.slice(0, 24)}>{para}</p>
-              ))}
+              {String(piece.body || "")
+                .split("\n\n")
+                .map((para) => (
+                  <p key={para.slice(0, 24)}>{para}</p>
+                ))}
             </article>
           ))}
           <div className="center">

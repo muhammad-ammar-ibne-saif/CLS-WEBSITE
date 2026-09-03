@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function Navbar() {
+export default function Navbar({ settings, session }) {
   const [open, setOpen] = useState(false);
   const [about, setAbout] = useState(false);
   const [events, setEvents] = useState(false);
+  const logo = settings?.logo || "/assets/logo.png";
+  const desk =
+    session?.role === "admin" ? "/admin" : session?.status === "approved" ? "/me" : "/login";
 
   useEffect(() => {
     const close = () => {
@@ -21,7 +24,7 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar-inner">
         <Link href="/" className="logo" aria-label="COMSATS Literary Society home">
-          <img src="/assets/logo.png" alt="COMSATS Literary Society" />
+          <img src={logo} alt={settings?.siteName || "COMSATS Literary Society"} />
         </Link>
 
         <nav className={`nav-pill${open ? " open" : ""}`}>
@@ -40,6 +43,7 @@ export default function Navbar() {
               <Link href="/about" onClick={() => setOpen(false)}>About</Link>
               <Link href="/constitution" onClick={() => setOpen(false)}>Constitution</Link>
               <Link href="/leadership" onClick={() => setOpen(false)}>Leadership</Link>
+              <Link href="/members" onClick={() => setOpen(false)}>Members</Link>
             </div>
           </div>
 
@@ -57,6 +61,7 @@ export default function Navbar() {
             <div className="nav-menu">
               <Link href="/events" onClick={() => setOpen(false)}>Upcoming</Link>
               <Link href="/history" onClick={() => setOpen(false)}>History</Link>
+              <Link href="/learn" onClick={() => setOpen(false)}>Workshops</Link>
             </div>
           </div>
 
@@ -64,9 +69,13 @@ export default function Navbar() {
             Writings
           </Link>
 
+          <Link href={desk} className="nav-item" onClick={() => setOpen(false)}>
+            {session ? "Desk" : "Sign in"}
+          </Link>
+
           <Link href="/register" className="btn" onClick={() => setOpen(false)}>
             <img src="/assets/book-open.svg" alt="" width={16} height={16} />
-            Register Yourself Now
+            {settings?.joinCta || "Register Yourself Now"}
           </Link>
         </nav>
 
