@@ -154,11 +154,11 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
 
     function onPointerDown(e) {
       renderer.domElement.focus();
+      const hits = hitFromPointer(e.clientX, e.clientY);
+      if (useHit(hits)) return;
       if (e.button === 0 && !locked && e.pointerType === "mouse") {
         renderer.domElement.requestPointerLock?.();
-        return;
       }
-      useHit(hitFromPointer(e.clientX, e.clientY));
     }
 
     function onMouseMove(e) {
@@ -202,7 +202,7 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
         if (location === "hall") {
           const near = nearestDoor();
           if (near) enterRoom(near.door.roomId);
-        } else if (nearExit()) {
+        } else if (nearExit() < 2.4) {
           enterHall();
         }
       }
@@ -234,8 +234,8 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
     }
 
     function nearExit() {
-      if (!world?.exit) return false;
-      return Math.hypot(world.exit.position.x - x, world.exit.position.z - z) < 1.55;
+      if (!world?.exit) return Infinity;
+      return Math.hypot(world.exit.position.x - x, world.exit.position.z - z);
     }
 
     function nearestExhibit() {
@@ -346,14 +346,14 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
         }
       } else if (location !== "hall") {
         const exhibit = nearestExhibit();
-        const leaving = nearExit();
-        if (leaving && (forward || held.forward) && grace <= 0) {
+        const exitDist = nearExit();
+        if (exitDist < 1.08 && grace <= 0) {
           enterHall();
         } else {
           emit({
             event: exhibit?.event || null,
-            looking: leaving ? "exit" : exhibit ? "event" : null,
-            prompt: leaving
+            looking: exitDist < 1.7 ? "exit" : exhibit ? "event" : null,
+            prompt: exitDist < 1.7
               ? "Walk through to return to the Hall of Years"
               : exhibit
                 ? exhibit.event.name

@@ -9,6 +9,11 @@ import { tenures } from "@/data/site";
 
 const HallExperience = dynamic(() => import("@/components/hall/HallExperience"), {
   ssr: false,
+  loading: () => (
+    <div className="hall-overlay">
+      <div className="hall-loading">Opening the archive…</div>
+    </div>
+  ),
 });
 
 export default function HistoryPage() {
@@ -24,10 +29,15 @@ export default function HistoryPage() {
             <p className="lede">
               CLS saw 11 presidents serve the society, each for one year where everyone contributed with the best of their efforts to the overall growth of society, to the point where it is today.
             </p>
-            <Link className="btn btn-outline" href="#wall">
-              <img src="/assets/blocks.svg" alt="" width={16} height={16} />
-              See Wall of Heroes
-            </Link>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+              <Link className="btn btn-outline" href="#wall">
+                <img src="/assets/blocks.svg" alt="" width={16} height={16} />
+                See Wall of Heroes
+              </Link>
+              <button className="btn" type="button" onClick={() => setHall(true)}>
+                Enter the Hall of Years
+              </button>
+            </div>
           </div>
           <Ornament />
         </div>
