@@ -81,12 +81,13 @@ export const writers = [
 ];
 
 export const leadership = [
-  { name: "Saima Akhtar Chatha", role: "Faculty Advisor", image: "/assets/portrait-frame.png" },
+  { name: "Dr Saima Akhtar Chatha", role: "Faculty Advisor", image: "/assets/portrait-frame.png" },
   { name: "M. Ammar Ibn-e-Saif", role: "President", image: "/assets/portrait-frame.png" },
   { name: "Sajjad Haider", role: "Vice President", image: "/assets/portrait-frame.png" },
+  { name: "Numra Ejaz", role: "General Secretary", image: "/assets/portrait-frame.png" },
   { name: "Talha Zafar", role: "General Secretary", image: "/assets/portrait-frame.png" },
-  { name: "Zoha Sattar", role: "Finance Secretary", image: "/assets/portrait-frame.png" },
-  { name: "Esha", role: "Social Secretary", image: "/assets/portrait-frame.png" },
+  { name: "Qammar Abbas", role: "Finance Secretary", image: "/assets/portrait-frame.png" },
+  { name: "Fatima Falak Sher", role: "Social Secretary", image: "/assets/portrait-frame.png" },
 ];
 
 export const tenures = [
