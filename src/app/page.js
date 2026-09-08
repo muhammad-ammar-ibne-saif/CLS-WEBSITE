@@ -15,8 +15,8 @@ export default async function HomePage() {
   const photos = faces.length ? faces : fallbackFaces;
 
   return (
-    <SiteShell>
-      <section className="hero pattern-edges">
+    <SiteShell leftVideo="/assets/home-bg.mp4">
+      <section className="hero">
         <div className="wrap stack">
           <div className="stack center">
             <h1 className="display">{page.title}</h1>
@@ -29,7 +29,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <div className="pattern-bottom" />
 
       <section className="section" id="events">
         <div className="wrap">
