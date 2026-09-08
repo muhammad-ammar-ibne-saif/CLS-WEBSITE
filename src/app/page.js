@@ -15,7 +15,7 @@ export default async function HomePage() {
   const photos = faces.length ? faces : fallbackFaces;
 
   return (
-    <SiteShell leftVideo="/assets/home-bg.mp4">
+    <SiteShell>
       <section className="hero">
         <div className="wrap stack">
           <div className="stack center">
@@ -39,8 +39,17 @@ export default async function HomePage() {
             <h2 className="headline">{page.headline}</h2>
           </div>
 
-          <div className="video-stage">
-            <img className="frame" src={page.heroImage || "/assets/video-frame.png"} alt="CLS event highlight" />
+          <div className="video-stage ornament-frame">
+            <video
+              className="frame"
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster={page.heroImage || "/assets/video-frame.png"}
+            >
+              <source src="/assets/home-bg.mp4" type="video/mp4" />
+            </video>
             <Link className="play-btn" href="/events" aria-label="See event details">
               <img src="/assets/play.svg" alt="" width={48} height={48} />
             </Link>
@@ -49,7 +58,9 @@ export default async function HomePage() {
           <div className="event-grid">
             {events.map((event) => (
               <article className="event-card" key={event.slug}>
-                <img className="cover" src={event.image} alt="" />
+                <div className="ornament-frame">
+                  <img className="cover" src={event.image} alt="" />
+                </div>
                 <h3>{event.title}</h3>
                 <p className="body">{event.summary}</p>
                 <Link className="btn" href={`/events/${event.slug}`}>See details</Link>
