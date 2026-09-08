@@ -3,10 +3,11 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { buildHall, buildYearRoom, disposeObject, resolveMove } from "./world";
+import { createEchoAudio } from "./films";
 
-const EYE = 1.62;
-const WALK = 4.4;
-const TURN = 1.55;
+const EYE = 1.55;
+const WALK = 2.35;
+const TURN = 1.85;
 
 export default function HallScene({ rooms, inputRef, onHud, onReady }) {
   const mountRef = useRef(null);
@@ -33,13 +34,13 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x120e0a);
-    scene.fog = new THREE.FogExp2(0x1a140c, 0.03);
+    scene.fog = new THREE.FogExp2(0x140f0a, 0.08);
 
     const camera = new THREE.PerspectiveCamera(
-      70,
+      78,
       host.clientWidth / Math.max(host.clientHeight, 1),
-      0.08,
-      80,
+      0.06,
+      28,
     );
     camera.rotation.order = "YXZ";
 
@@ -59,7 +60,7 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
     let world = null;
     let location = "hall";
     let x = 0;
-    let z = 20;
+    let z = 0.25;
     let yaw = 0;
     let pitch = 0;
     let grace = 0;
@@ -74,7 +75,7 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
       const payload = {
         location,
         title: room ? room.title : "Hall of Years",
-        subtitle: room ? `President: ${room.president}` : "Wall of Heroes · CLS archive",
+        subtitle: room ? `President: ${room.president}` : "The years are still speaking",
         yearLabel: room?.yearLabel || "CLS",
         ...extra,
       };
@@ -84,6 +85,8 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
       hudRef.current?.(payload);
     }
 
+    const audio = createEchoAudio();
+
     function mountWorld(next, nextLocation) {
       if (world) {
         scene.remove(world.root);
@@ -92,13 +95,14 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
       world = next;
       location = nextLocation;
       scene.add(world.root);
-      scene.fog = new THREE.FogExp2(world.fog, location === "hall" ? 0.028 : 0.022);
+      scene.fog = new THREE.FogExp2(world.fog, world.fogDensity || 0.08);
       scene.background = new THREE.Color(world.fog);
       x = world.spawn.x;
       z = world.spawn.z;
       yaw = world.spawn.yaw;
       pitch = 0;
-      grace = 0.9;
+      grace = 0.7;
+      audio.setMode(world.ambience || (location === "hall" ? "hall" : "room"));
       emit({ prompt: null, event: null, looking: null, flash: true });
     }
 
@@ -142,7 +146,9 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
             return true;
           }
           if (obj.userData?.kind === "event") {
-            const exhibit = world.exhibits?.[obj.userData.eventIndex];
+            const exhibit =
+              world.exhibits?.find((item) => item.index === obj.userData.eventIndex) ||
+              world.exhibits?.[obj.userData.eventIndex];
             if (exhibit) emit({ event: exhibit.event, looking: "event" });
             return true;
           }
@@ -154,6 +160,7 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
 
     function onPointerDown(e) {
       renderer.domElement.focus();
+      audio.resume();
       const hits = hitFromPointer(e.clientX, e.clientY);
       if (useHit(hits)) return;
       if (e.button === 0 && !locked && e.pointerType === "mouse") {
@@ -198,11 +205,12 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
       ]);
       if (codes.has(e.code)) e.preventDefault();
       keys.add(e.code);
+      audio.resume();
       if (e.code === "Enter" || e.code === "KeyE") {
         if (location === "hall") {
           const near = nearestDoor();
           if (near) enterRoom(near.door.roomId);
-        } else if (nearExit() < 2.4) {
+        } else if (nearExit() < 1.15) {
           enterHall();
         }
       }
@@ -219,7 +227,7 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
       locked = document.pointerLockElement === renderer.domElement;
     }
 
-    function nearestDoor(limit = 2.25) {
+    function nearestDoor(limit = 1.55) {
       if (!world?.doors?.length) return null;
       let best = null;
       let bestD = limit;
@@ -241,7 +249,7 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
     function nearestExhibit() {
       if (!world?.exhibits?.length) return null;
       let best = null;
-      let bestD = 2.55;
+      let bestD = 1.45;
       for (const exhibit of world.exhibits) {
         const d = Math.hypot(exhibit.position.x - x, exhibit.position.z - z);
         if (d < bestD) {
@@ -326,13 +334,17 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
       const t = clock.elapsedTime;
       for (const floater of world?.floaters || []) {
         floater.mesh.position.y = floater.baseY + Math.sin(t * floater.speed + floater.phase) * floater.amp;
-        floater.mesh.rotation.y += dt * 0.35;
-        floater.mesh.rotation.z += dt * 0.12;
+        if (floater.spin !== false) {
+          floater.mesh.rotation.y += dt * 0.35;
+          floater.mesh.rotation.z += dt * 0.12;
+        }
       }
+      for (const film of world?.films || []) film.tick(t);
+      if (location === "hall") audio.pulseYears(t);
 
       if (grace <= 0 && location === "hall") {
         const near = nearestDoor();
-        if (near && near.distance < 1.2) {
+        if (near && near.distance < 0.82) {
           enterRoom(near.door.roomId);
         } else {
           const room = near ? roomById[near.door.roomId] : null;
@@ -340,24 +352,24 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
             event: null,
             looking: near ? "door" : null,
             prompt: near
-              ? `Enter ${room.yearLabel} — ${room.plaque}. Press Enter or walk in.`
-              : "Walk the hall. Face a year. Press Enter or walk through the door.",
+              ? `${room.yearLabel} is leaking through the door — walk in.`
+              : "A small hall. Years echo from every wall. Walk toward a door.",
           });
         }
       } else if (location !== "hall") {
         const exhibit = nearestExhibit();
         const exitDist = nearExit();
-        if (exitDist < 1.08 && grace <= 0) {
+        if (exitDist < 0.72 && grace <= 0) {
           enterHall();
         } else {
           emit({
             event: exhibit?.event || null,
-            looking: exitDist < 1.7 ? "exit" : exhibit ? "event" : null,
-            prompt: exitDist < 1.7
-              ? "Walk through to return to the Hall of Years"
+            looking: exitDist < 1.05 ? "exit" : exhibit ? "event" : null,
+            prompt: exitDist < 1.05
+              ? "The hall is behind you"
               : exhibit
                 ? exhibit.event.name
-                : "The year is scattered. Walk toward a frame.",
+                : "The year is packed around you. Turn. The walls are still reciting.",
           });
         }
       }
@@ -379,6 +391,7 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
       window.removeEventListener("keyup", onKeyUp);
       document.removeEventListener("pointerlockchange", onLockChange);
       if (document.pointerLockElement === renderer.domElement) document.exitPointerLock?.();
+      audio.dispose();
       if (world) disposeObject(world.root);
       renderer.dispose();
       host.innerHTML = "";

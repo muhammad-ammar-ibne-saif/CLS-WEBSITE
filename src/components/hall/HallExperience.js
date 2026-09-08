@@ -9,8 +9,8 @@ export default function HallExperience({ onClose, tenures }) {
   const inputRef = useRef({ forward: false, back: false, left: false, right: false });
   const [hud, setHud] = useState({
     title: "Hall of Years",
-    subtitle: "Wall of Heroes · CLS archive",
-    prompt: "Click to look around. Arrows to walk.",
+    subtitle: "The years are still speaking",
+    prompt: "Click once — the years start speaking. Arrows to walk.",
     event: null,
     looking: null,
   });
