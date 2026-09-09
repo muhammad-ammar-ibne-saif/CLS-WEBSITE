@@ -39,17 +39,21 @@ export default async function HomePage() {
             <h2 className="headline">{page.headline}</h2>
           </div>
 
-          <div className="video-stage">
-            <img className="frame" src={page.heroImage || "/assets/about-banner.png"} alt="CLS event highlight" />
+          <div className="video-stage is-framed">
+            <div className="video-stage-rotator">
+              <img src="/assets/video-frame.png" alt="" />
+            </div>
             <Link className="play-btn" href="/events" aria-label="See event details">
-              <img src="/assets/play.svg" alt="" width={48} height={48} />
+              <img src="/assets/play.svg" alt="" width={120} height={120} />
             </Link>
           </div>
 
           <div className="event-grid">
             {events.map((event) => (
               <article className="event-card" key={event.slug}>
-                <img className="cover" src={event.image} alt="" />
+                <div className="picture-frame">
+                  <img src="/assets/photo-frame.png" alt="" />
+                </div>
                 <h3>{event.title}</h3>
                 <p className="body">{event.summary}</p>
                 <Link className="btn" href={`/events/${event.slug}`}>See details</Link>

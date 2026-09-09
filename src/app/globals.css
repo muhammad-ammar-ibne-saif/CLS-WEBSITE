@@ -490,6 +490,31 @@ button {
   display: block;
 }
 
+.video-stage.is-framed {
+  aspect-ratio: 614 / 455;
+  container-type: size;
+  overflow: hidden;
+}
+
+.video-stage-rotator {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100cqw;
+  aspect-ratio: 455 / 614;
+  transform: translate(-50%, -50%) rotate(90deg);
+  overflow: hidden;
+}
+
+.video-stage-rotator img {
+  position: absolute;
+  width: 132.68%;
+  height: 126.45%;
+  left: -16.19%;
+  top: -13.39%;
+  max-width: none;
+}
+
 .play-btn {
   position: absolute;
   left: 50%;
@@ -509,6 +534,18 @@ button {
   height: 48px;
 }
 
+.video-stage.is-framed .play-btn {
+  width: 120px;
+  height: 120px;
+  background: none;
+  border-radius: 0;
+}
+
+.video-stage.is-framed .play-btn img {
+  width: 120px;
+  height: 120px;
+}
+
 .event-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -521,6 +558,23 @@ button {
   align-items: center;
   gap: 24px;
   text-align: center;
+}
+
+.picture-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 455 / 614;
+  overflow: hidden;
+  transform: rotate(180deg);
+}
+
+.picture-frame img {
+  position: absolute;
+  width: 132.68%;
+  height: 126.45%;
+  left: -16.19%;
+  top: -13.39%;
+  max-width: none;
 }
 
 .event-card img.cover {
