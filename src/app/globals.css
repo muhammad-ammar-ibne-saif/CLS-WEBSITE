@@ -355,9 +355,13 @@ button {
 
 .hero {
   position: relative;
+  padding: 100px 0 80px;
+  overflow: hidden;
+}
+
+.hero-home {
   margin-top: calc(var(--nav-h) * -1);
   padding: calc(var(--nav-h) + 100px) var(--ornament-h) calc(80px + var(--ornament-h));
-  overflow: hidden;
   background-image: var(--ornament), url("/assets/border-v.png"), url("/assets/border-v.png");
   background-repeat: repeat-x, repeat-y, repeat-y;
   background-position: center bottom, left top, right top;

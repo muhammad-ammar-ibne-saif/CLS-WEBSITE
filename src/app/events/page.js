@@ -21,8 +21,8 @@ export default async function EventsPage() {
 
       <section className="section" style={{ paddingTop: 40 }}>
         <div className="wrap">
-          <div className="video-stage ornament-frame">
-            <img className="frame" src={page.heroImage || "/assets/video-frame.png"} alt="" />
+          <div className="video-stage">
+            <img className="frame" src={page.heroImage || "/assets/about-banner.png"} alt="" />
             <span className="play-btn" aria-hidden="true">
               <img src="/assets/play.svg" alt="" width={48} height={48} />
             </span>
@@ -30,9 +30,7 @@ export default async function EventsPage() {
           <div className="event-grid">
             {events.map((event) => (
               <article className="event-card" key={event.slug}>
-                <div className="ornament-frame">
-                  <img className="cover" src={event.image} alt="" />
-                </div>
+                <img className="cover" src={event.image} alt="" />
                 <h3>{event.title}</h3>
                 <p className="body">{event.summary}</p>
                 <Link className="btn" href={`/events/${event.slug}`}>See details</Link>

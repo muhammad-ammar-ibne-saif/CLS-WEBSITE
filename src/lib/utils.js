@@ -1,3 +1,23 @@
+const FRAME_ASSETS = new Set([
+  "/assets/video-frame.png",
+  "/assets/photo-frame.png",
+  "/assets/portrait-frame.png",
+  "/assets/history-portrait.png",
+]);
+
+export const EVENT_COVERS = [
+  "/assets/about-banner.png",
+  "/assets/members/08.png",
+  "/assets/members/18.png",
+  "/assets/members/22.png",
+  "/assets/members/30.png",
+];
+
+export function unframedMedia(src, fallback = EVENT_COVERS[0]) {
+  if (!src || FRAME_ASSETS.has(src)) return fallback;
+  return src;
+}
+
 export function toPlain(doc) {
   if (!doc) return null;
   const raw = typeof doc.toObject === "function" ? doc.toObject() : doc;

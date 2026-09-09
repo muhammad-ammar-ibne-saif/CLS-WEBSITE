@@ -8,7 +8,7 @@ export const events = [
     slug: "shaam-e-sukhan-2025",
     title: "Shaam e Sukhan 2025",
     year: "2025",
-    image: "/assets/photo-frame.png",
+    image: "/assets/members/08.png",
     summary:
       "A community of 200+ literates who have one vision in common and that is to promote & spread love & literature in campus",
   },
@@ -16,7 +16,7 @@ export const events = [
     slug: "shaam-e-sukhan-2024",
     title: "Shaam e Sukhan 2024",
     year: "2024",
-    image: "/assets/video-frame.png",
+    image: "/assets/members/18.png",
     summary:
       "An evening of recited verse, open mics, and the voices that keep COMSATS literary culture alive.",
   },
@@ -24,7 +24,7 @@ export const events = [
     slug: "sham-e-ghazal-2023",
     title: "Sham e Ghazal 2023",
     year: "2023",
-    image: "/assets/history-portrait.png",
+    image: "/assets/members/22.png",
     summary:
       "A gathering built around ghazal, melody, and the classical forms CLS has hosted since its earliest years.",
   },
@@ -32,7 +32,7 @@ export const events = [
     slug: "bazm-e-adab-2022",
     title: "Bazm e Adab 2022",
     year: "2022",
-    image: "/assets/photo-frame.png",
+    image: "/assets/members/30.png",
     summary:
       "Prose, critique, and conversation — a campus assembly for readers who want literature lived, not only studied.",
   },

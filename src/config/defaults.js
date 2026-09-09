@@ -26,7 +26,7 @@ export const defaultPages = {
     secondaryHeadline: "Our Writers Who Keep Our Legacy Alive",
     secondaryLede:
       "CLS has conducted 20+ poetry & prose workshops and has hosted and trained more than 20 writers from its platform.",
-    heroImage: "/assets/video-frame.png",
+    heroImage: "/assets/about-banner.png",
     calligraphyImage: "/assets/calligraphy-events.png",
   },
   about: {
@@ -68,7 +68,7 @@ export const defaultPages = {
     key: "events",
     title: "We’ve organized 100+ On-Campus Events. See Our Literary Legacy",
     lede: "From Shaam e Sukhan to Sham e Ghazal, CLS hosts the gatherings that keep literature public on campus.",
-    heroImage: "/assets/video-frame.png",
+    heroImage: "/assets/about-banner.png",
   },
   writings: {
     key: "writings",

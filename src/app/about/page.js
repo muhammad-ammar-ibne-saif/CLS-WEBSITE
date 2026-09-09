@@ -27,12 +27,9 @@ export default async function AboutPage() {
       </section>
 
       {page.heroImage ? (
-        <>
-          <section className="banner-frame pattern-edges">
-            <img className="banner" src={page.heroImage} alt="" />
-          </section>
-          <div className="pattern-bottom" />
-        </>
+        <section className="banner-frame">
+          <img className="banner" src={page.heroImage} alt="" />
+        </section>
       ) : null}
 
       <section className="section story">

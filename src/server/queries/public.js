@@ -1,6 +1,6 @@
 import { connection } from "next/server";
 import { connectDb, isDbConfigured } from "@/lib/db";
-import { toPlain } from "@/lib/utils";
+import { toPlain, unframedMedia } from "@/lib/utils";
 import { ACCOUNT_STATUS, ROLES } from "@/config/constants";
 import {
   defaultConstitutions,
@@ -43,14 +43,20 @@ export async function getPage(key) {
   const fallback = defaultPages[key] || { key, title: "", lede: "" };
   return safe(async () => {
     const row = await Page.findOne({ key }).lean();
-    return row ? { ...fallback, ...toPlain(row) } : fallback;
+    const page = row ? { ...fallback, ...toPlain(row) } : fallback;
+    if (page.heroImage) page.heroImage = unframedMedia(page.heroImage, fallback.heroImage);
+    return page;
   }, fallback);
 }
 
 export async function getEvents() {
   return safe(async () => {
     const rows = await Event.find({ published: true }).sort({ order: 1, year: -1 }).lean();
-    return rows.length ? rows.map(toPlain) : defaultEvents;
+    const list = rows.length ? rows.map(toPlain) : defaultEvents;
+    return list.map((item, index) => ({
+      ...item,
+      image: unframedMedia(item.image, defaultEvents[index % defaultEvents.length]?.image),
+    }));
   }, defaultEvents);
 }
 

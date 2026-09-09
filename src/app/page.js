@@ -16,7 +16,7 @@ export default async function HomePage() {
 
   return (
     <SiteShell bgVideo="/assets/home-bg.mp4">
-      <section className="hero">
+      <section className="hero hero-home">
         <div className="wrap stack">
           <div className="stack center">
             <h1 className="display">{page.title}</h1>
@@ -39,8 +39,8 @@ export default async function HomePage() {
             <h2 className="headline">{page.headline}</h2>
           </div>
 
-          <div className="video-stage ornament-frame">
-            <img className="frame" src={page.heroImage || "/assets/video-frame.png"} alt="CLS event highlight" />
+          <div className="video-stage">
+            <img className="frame" src={page.heroImage || "/assets/about-banner.png"} alt="CLS event highlight" />
             <Link className="play-btn" href="/events" aria-label="See event details">
               <img src="/assets/play.svg" alt="" width={48} height={48} />
             </Link>
@@ -49,9 +49,7 @@ export default async function HomePage() {
           <div className="event-grid">
             {events.map((event) => (
               <article className="event-card" key={event.slug}>
-                <div className="ornament-frame">
-                  <img className="cover" src={event.image} alt="" />
-                </div>
+                <img className="cover" src={event.image} alt="" />
                 <h3>{event.title}</h3>
                 <p className="body">{event.summary}</p>
                 <Link className="btn" href={`/events/${event.slug}`}>See details</Link>
