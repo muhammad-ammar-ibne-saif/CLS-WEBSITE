@@ -27,7 +27,10 @@ export default async function AboutPage() {
       </section>
 
       {page.heroImage ? (
-        <section className="banner-frame">
+        <section className="banner-frame is-framed">
+          <div className="video-stage-rotator" aria-hidden="true">
+            <img src="/assets/video-frame.png" alt="" />
+          </div>
           <img className="banner" src={page.heroImage} alt="" />
         </section>
       ) : null}

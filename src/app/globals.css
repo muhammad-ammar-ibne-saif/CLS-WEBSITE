@@ -758,6 +758,32 @@ button {
   object-fit: cover;
 }
 
+.banner-frame.is-framed {
+  padding: 0;
+  width: min(1200px, calc(100% - (var(--pad) * 2)));
+  margin-inline: auto;
+  height: auto;
+  aspect-ratio: 614 / 455;
+  container-type: size;
+  overflow: hidden;
+}
+
+.banner-frame.is-framed .video-stage-rotator {
+  z-index: 0;
+}
+
+.banner-frame.is-framed img.banner {
+  position: absolute;
+  left: 11%;
+  right: 11%;
+  top: 13%;
+  bottom: 13%;
+  z-index: 1;
+  width: 78%;
+  height: 74%;
+  object-fit: cover;
+}
+
 .story p {
   max-width: 840px;
   font-size: 20px;
@@ -995,6 +1021,15 @@ a.person {
 
   .banner-frame img.banner {
     height: 360px;
+  }
+
+  .banner-frame.is-framed {
+    padding: 0;
+    width: calc(100% - 32px);
+  }
+
+  .banner-frame.is-framed img.banner {
+    height: 74%;
   }
 
   .writer-row {
