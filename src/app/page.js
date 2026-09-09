@@ -15,7 +15,7 @@ export default async function HomePage() {
   const photos = faces.length ? faces : fallbackFaces;
 
   return (
-    <SiteShell>
+    <SiteShell bgVideo="/assets/home-bg.mp4">
       <section className="hero">
         <div className="wrap stack">
           <div className="stack center">
@@ -40,16 +40,7 @@ export default async function HomePage() {
           </div>
 
           <div className="video-stage ornament-frame">
-            <video
-              className="frame"
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster={page.heroImage || "/assets/video-frame.png"}
-            >
-              <source src="/assets/home-bg.mp4" type="video/mp4" />
-            </video>
+            <img className="frame" src={page.heroImage || "/assets/video-frame.png"} alt="CLS event highlight" />
             <Link className="play-btn" href="/events" aria-label="See event details">
               <img src="/assets/play.svg" alt="" width={48} height={48} />
             </Link>

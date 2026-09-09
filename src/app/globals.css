@@ -72,6 +72,49 @@ button {
   flex-direction: column;
 }
 
+.site-home {
+  background: var(--bg);
+}
+
+.home-wash {
+  position: fixed;
+  top: -12px;
+  left: -22px;
+  width: 482px;
+  height: 856px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: plus-darker;
+  transform: rotate(-180deg);
+  transform-origin: center center;
+}
+
+@supports not (mix-blend-mode: plus-darker) {
+  .home-wash {
+    mix-blend-mode: darken;
+  }
+}
+
+.home-wash video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-wash.is-docked {
+  opacity: 0;
+}
+
+.site-home main,
+.site-home .pattern-box,
+.site-home .footer {
+  position: relative;
+  z-index: 1;
+}
+
 .site main {
   flex: 1;
   padding-top: var(--nav-h);
@@ -203,14 +246,26 @@ button {
   right: 0;
   z-index: 50;
   padding: 24px var(--pad);
+  background: transparent;
+  transition: background 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+.navbar.is-scrolled {
   backdrop-filter: blur(8px);
   background: color-mix(in srgb, var(--bg) 72%, transparent);
 }
 
 .navbar-inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 16px;
+}
+
+.nav-cluster {
+  display: flex;
+  align-items: center;
   gap: 16px;
 }
 
@@ -300,12 +355,13 @@ button {
 
 .hero {
   position: relative;
-  padding: calc(100px + var(--ornament-h)) var(--ornament-h) calc(80px + var(--ornament-h));
+  margin-top: calc(var(--nav-h) * -1);
+  padding: calc(var(--nav-h) + 100px) var(--ornament-h) calc(80px + var(--ornament-h));
   overflow: hidden;
-  background-image: var(--ornament), var(--ornament), url("/assets/border-v.png"), url("/assets/border-v.png");
-  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-  background-position: center top, center bottom, left top, right top;
-  background-size: auto var(--ornament-h), auto var(--ornament-h), var(--ornament-h) auto, var(--ornament-h) auto;
+  background-image: var(--ornament), url("/assets/border-v.png"), url("/assets/border-v.png");
+  background-repeat: repeat-x, repeat-y, repeat-y;
+  background-position: center bottom, left top, right top;
+  background-size: auto var(--ornament-h), var(--ornament-h) auto, var(--ornament-h) auto;
 }
 
 .hero .wrap {
@@ -346,8 +402,8 @@ button {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 140px;
-  background: linear-gradient(180deg, transparent, var(--bg) 78%);
+  height: 168px;
+  background: linear-gradient(180deg, transparent, var(--bg) 72%);
   pointer-events: none;
 }
 
@@ -890,11 +946,16 @@ a.person {
 }
 
 @media (max-width: 760px) {
-  .nav-pill {
+  .home-wash {
+    width: 240px;
+    height: 428px;
+  }
+
+  .nav-cluster {
     display: none;
   }
 
-  .nav-pill.open {
+  .nav-cluster.open {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -902,6 +963,16 @@ a.person {
     left: 16px;
     right: 16px;
     padding: 12px;
+    align-items: stretch;
+    gap: 12px;
+    background: var(--nav);
+    border-radius: 12px;
+  }
+
+  .nav-cluster.open .nav-pill {
+    flex-direction: column;
+    background: transparent;
+    padding: 0;
     align-items: stretch;
   }
 

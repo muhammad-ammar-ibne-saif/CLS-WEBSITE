@@ -7,77 +7,82 @@ export default function Navbar({ settings, session }) {
   const [open, setOpen] = useState(false);
   const [about, setAbout] = useState(false);
   const [events, setEvents] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const logo = settings?.logo || "/assets/logo.png";
   const desk =
     session?.role === "admin" ? "/admin" : session?.status === "approved" ? "/me" : "/login";
 
   useEffect(() => {
-    const close = () => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
       setAbout(false);
       setEvents(false);
     };
-    window.addEventListener("scroll", close);
-    return () => window.removeEventListener("scroll", close);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <header className="navbar">
+    <header className={`navbar${scrolled ? " is-scrolled" : ""}`}>
       <div className="navbar-inner">
         <Link href="/" className="logo" aria-label="COMSATS Literary Society home">
           <img src={logo} alt={settings?.siteName || "COMSATS Literary Society"} />
         </Link>
 
-        <nav className={`nav-pill${open ? " open" : ""}`}>
-          <div className={`nav-drop${about ? " open" : ""}`}>
-            <button
-              type="button"
-              onClick={() => {
-                setAbout((v) => !v);
-                setEvents(false);
-              }}
-            >
-              About CLS
-              <img src="/assets/chevron-down.svg" alt="" width={16} height={16} />
-            </button>
-            <div className="nav-menu">
-              <Link href="/about" onClick={() => setOpen(false)}>About</Link>
-              <Link href="/constitution" onClick={() => setOpen(false)}>Constitution</Link>
-              <Link href="/leadership" onClick={() => setOpen(false)}>Leadership</Link>
-              <Link href="/members" onClick={() => setOpen(false)}>Members</Link>
+        <div className={`nav-cluster${open ? " open" : ""}`}>
+          <nav className="nav-pill">
+            <div className={`nav-drop${about ? " open" : ""}`}>
+              <button
+                type="button"
+                onClick={() => {
+                  setAbout((v) => !v);
+                  setEvents(false);
+                }}
+              >
+                About CLS
+                <img src="/assets/chevron-down.svg" alt="" width={16} height={16} />
+              </button>
+              <div className="nav-menu">
+                <Link href="/about" onClick={() => setOpen(false)}>About</Link>
+                <Link href="/constitution" onClick={() => setOpen(false)}>Constitution</Link>
+                <Link href="/leadership" onClick={() => setOpen(false)}>Leadership</Link>
+                <Link href="/members" onClick={() => setOpen(false)}>Members</Link>
+              </div>
             </div>
-          </div>
 
-          <div className={`nav-drop${events ? " open" : ""}`}>
-            <button
-              type="button"
-              onClick={() => {
-                setEvents((v) => !v);
-                setAbout(false);
-              }}
-            >
-              Events
-              <img src="/assets/chevron-down.svg" alt="" width={16} height={16} />
-            </button>
-            <div className="nav-menu">
-              <Link href="/events" onClick={() => setOpen(false)}>Upcoming</Link>
-              <Link href="/history" onClick={() => setOpen(false)}>History</Link>
-              <Link href="/learn" onClick={() => setOpen(false)}>Workshops</Link>
+            <div className={`nav-drop${events ? " open" : ""}`}>
+              <button
+                type="button"
+                onClick={() => {
+                  setEvents((v) => !v);
+                  setAbout(false);
+                }}
+              >
+                Events
+                <img src="/assets/chevron-down.svg" alt="" width={16} height={16} />
+              </button>
+              <div className="nav-menu">
+                <Link href="/events" onClick={() => setOpen(false)}>Upcoming</Link>
+                <Link href="/history" onClick={() => setOpen(false)}>History</Link>
+                <Link href="/learn" onClick={() => setOpen(false)}>Workshops</Link>
+              </div>
             </div>
-          </div>
 
-          <Link href="/writings" className="nav-item" onClick={() => setOpen(false)}>
-            Writings
-          </Link>
+            <Link href="/writings" className="nav-item" onClick={() => setOpen(false)}>
+              Writings
+            </Link>
 
-          <Link href={desk} className="nav-item" onClick={() => setOpen(false)}>
-            {session ? "Desk" : "Sign in"}
-          </Link>
+            <Link href={desk} className="nav-item" onClick={() => setOpen(false)}>
+              {session ? "Desk" : "Sign in"}
+            </Link>
+          </nav>
 
-          <Link href="/register" className="btn" onClick={() => setOpen(false)}>
+          <Link href="/register" className="btn btn-outline nav-cta" onClick={() => setOpen(false)}>
             <img src="/assets/book-open.svg" alt="" width={16} height={16} />
             {settings?.joinCta || "Register Yourself Now"}
           </Link>
-        </nav>
+        </div>
 
         <button
           type="button"
