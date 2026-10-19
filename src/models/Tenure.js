@@ -6,7 +6,7 @@ const TenureSchema = new mongoose.Schema(
     president: { type: String, required: true },
     yearLabel: { type: String, default: "" },
     summary: { type: String, default: "" },
-    portrait: { type: String, default: "/assets/history-portrait.png" },
+    portrait: { type: String, default: "/assets/history-portrait.webp" },
     order: { type: Number, default: 0 },
     published: { type: Boolean, default: true },
     events: [

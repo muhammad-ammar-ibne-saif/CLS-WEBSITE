@@ -41,7 +41,7 @@ export default async function HomePage() {
 
           <div className="video-stage is-framed">
             <div className="video-stage-rotator">
-              <img src="/assets/video-frame.png" alt="" />
+              <img src="/assets/video-frame.webp" alt="" />
             </div>
             <Link className="play-btn" href="/events" aria-label="See event details">
               <img src="/assets/play.svg" alt="" width={120} height={120} />
@@ -52,7 +52,7 @@ export default async function HomePage() {
             {events.map((event) => (
               <article className="event-card" key={event.slug}>
                 <div className="picture-frame">
-                  <img src="/assets/photo-frame.png" alt="" />
+                  <img src="/assets/photo-frame.webp" alt="" />
                 </div>
                 <h3>{event.title}</h3>
                 <p className="body">{event.summary}</p>

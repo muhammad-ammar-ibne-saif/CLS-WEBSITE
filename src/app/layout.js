@@ -21,7 +21,7 @@ export const metadata = {
   description:
     "COMSATS Literary Society — promoting literature and poetry in COMSATS Lahore since 2016.",
   icons: {
-    icon: "/assets/logo.png",
+    icon: "/assets/logo.webp",
   },
 };
 

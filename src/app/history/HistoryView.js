@@ -74,7 +74,7 @@ export default function HistoryView({ page, tenures }) {
                     <div className="acc-body">
                       <div className="tenure">
                         <div className="person">
-                          <img src={tenure.portrait || "/assets/history-portrait.png"} alt="" />
+                          <img src={tenure.portrait || "/assets/history-portrait.webp"} alt="" />
                           <h3>{tenure.president}</h3>
                         </div>
                         <div>
@@ -87,7 +87,7 @@ export default function HistoryView({ page, tenures }) {
                       <div className="tenure-events">
                         {events.map((event, i) => (
                           <div className="person" key={`${event.name}-${i}`}>
-                            <img src={event.image || "/assets/portrait-frame.png"} alt="" />
+                            <img src={event.image || "/assets/portrait-frame.webp"} alt="" />
                             <h3>{event.name}</h3>
                           </div>
                         ))}

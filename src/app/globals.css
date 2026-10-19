@@ -13,7 +13,7 @@
   --content: 840px;
   --pad: clamp(20px, 8vw, 120px);
   --nav-h: 108px;
-  --ornament: url("/assets/border.png");
+  --ornament: url("/assets/border.webp");
   --ornament-h: 60px;
 }
 
@@ -362,7 +362,7 @@ button {
 .hero-home {
   margin-top: calc(var(--nav-h) * -1);
   padding: calc(var(--nav-h) + 100px) var(--ornament-h) calc(80px + var(--ornament-h));
-  background-image: var(--ornament), url("/assets/border-v.png"), url("/assets/border-v.png");
+  background-image: var(--ornament), url("/assets/border-v.webp"), url("/assets/border-v.webp");
   background-repeat: repeat-x, repeat-y, repeat-y;
   background-position: center bottom, left top, right top;
   background-size: auto var(--ornament-h), var(--ornament-h) auto, var(--ornament-h) auto;
@@ -415,7 +415,7 @@ button {
   position: relative;
   padding: var(--ornament-h);
   background-color: var(--bg);
-  background-image: var(--ornament), var(--ornament), url("/assets/border-v.png"), url("/assets/border-v.png");
+  background-image: var(--ornament), var(--ornament), url("/assets/border-v.webp"), url("/assets/border-v.webp");
   background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
   background-position: center top, center bottom, left top, right top;
   background-size: auto var(--ornament-h), auto var(--ornament-h), var(--ornament-h) auto, var(--ornament-h) auto;
@@ -438,7 +438,7 @@ button {
   top: 0;
   bottom: 0;
   width: var(--ornament-h);
-  background: url("/assets/border-v.png") repeat-y center top / var(--ornament-h) auto;
+  background: url("/assets/border-v.webp") repeat-y center top / var(--ornament-h) auto;
   pointer-events: none;
   z-index: 2;
 }
@@ -641,7 +641,7 @@ button {
   padding: var(--ornament-h);
   margin: 0;
   background-color: var(--bg);
-  background-image: var(--ornament), var(--ornament), url("/assets/border-v.png"), url("/assets/border-v.png");
+  background-image: var(--ornament), var(--ornament), url("/assets/border-v.webp"), url("/assets/border-v.webp");
   background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
   background-position: center top, center bottom, left top, right top;
   background-size: auto var(--ornament-h), auto var(--ornament-h), var(--ornament-h) auto, var(--ornament-h) auto;

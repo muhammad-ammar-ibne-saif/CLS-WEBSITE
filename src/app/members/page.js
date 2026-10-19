@@ -23,7 +23,7 @@ export default async function MembersPage() {
           <div className="team-grid">
             {people.map((person) => (
               <Link className="person" key={person._id} href={`/members/${person.slug || person._id}`}>
-                <img src={person.avatar || "/assets/portrait-frame.png"} alt={person.name} />
+                <img src={person.avatar || "/assets/portrait-frame.webp"} alt={person.name} />
                 <div>
                   <h3>{person.name}</h3>
                   <p>

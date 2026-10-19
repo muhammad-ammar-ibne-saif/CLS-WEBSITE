@@ -12,7 +12,7 @@ export default async function LeadershipPage() {
     ? people.map((person) => ({
         name: person.name,
         role: person.office || person.team,
-        image: person.avatar || "/assets/portrait-frame.png",
+        image: person.avatar || "/assets/portrait-frame.webp",
         href: person.slug ? `/members/${person.slug}` : null,
       }))
     : defaultLeadership.map((person) => ({ ...person, href: null }));

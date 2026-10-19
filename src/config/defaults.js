@@ -4,7 +4,7 @@ export const defaultSettings = {
   key: "global",
   siteName: "COMSATS Literary Society",
   tagline: "Promoting literature and poetry in COMSATS Lahore since 2016.",
-  logo: "/assets/logo.png",
+  logo: "/assets/logo.webp",
   joinTitle: "CLS Is Waiting For “Your” Words. So Are We. Join Us Today.",
   joinLede:
     "Join a circle of readers, writers, and dreamers who believe literature is meant to be shared, lived, and remembered.",

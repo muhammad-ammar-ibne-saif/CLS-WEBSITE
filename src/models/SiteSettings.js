@@ -5,7 +5,7 @@ const SiteSettingsSchema = new mongoose.Schema(
     key: { type: String, default: "global", unique: true },
     siteName: { type: String, default: "COMSATS Literary Society" },
     tagline: { type: String, default: "Promoting literature and poetry in COMSATS Lahore since 2016." },
-    logo: { type: String, default: "/assets/logo.png" },
+    logo: { type: String, default: "/assets/logo.webp" },
     joinTitle: { type: String, default: "CLS Is Waiting For “Your” Words. So Are We. Join Us Today." },
     joinLede: {
       type: String,

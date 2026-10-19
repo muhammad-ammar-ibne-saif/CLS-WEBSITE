@@ -21,7 +21,7 @@ export default function Footer({ settings }) {
           </div>
         </div>
 
-        <img className="footer-rose" src="/assets/rose.png" alt="Illustrated rose" />
+        <img className="footer-rose" src="/assets/rose.webp" alt="Illustrated rose" />
 
         <div className="footer-cols">
           <div className="footer-col">

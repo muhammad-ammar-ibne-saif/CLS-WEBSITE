@@ -29,7 +29,7 @@ export default async function AboutPage() {
       {page.heroImage ? (
         <section className="banner-frame is-framed">
           <div className="video-stage-rotator" aria-hidden="true">
-            <img src="/assets/video-frame.png" alt="" />
+            <img src="/assets/video-frame.webp" alt="" />
           </div>
           <img className="banner" src={page.heroImage} alt="" />
         </section>

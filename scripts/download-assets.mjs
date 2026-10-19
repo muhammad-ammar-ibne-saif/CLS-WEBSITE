@@ -20,7 +20,7 @@ const assets = {
     "https://www.figma.com/api/mcp/asset/5c1eb18c-0af5-4abd-b20d-813b4de82a4d.svg",
   "blocks.svg":
     "https://www.figma.com/api/mcp/asset/199115c1-40fe-452c-9f6c-1bc195f5c678.svg",
-  "border.png":
+  "border.webp":
     "https://www.figma.com/api/mcp/asset/fff68f50-c22a-4aeb-b8d1-6ca6c74e1fbb.png",
   "calligraphy-events.png":
     "https://www.figma.com/api/mcp/asset/4dc1f37f-a38c-40df-be5f-dafef6e9c7cf.png",
@@ -36,15 +36,15 @@ const assets = {
     "https://www.figma.com/api/mcp/asset/f613481a-8495-4d35-8342-710bda230c87.png",
   "calligraphy-history.png":
     "https://www.figma.com/api/mcp/asset/7d50b8e3-7617-4f3e-8ca1-21180e8fbc12.png",
-  "video-frame.png":
+  "video-frame.webp":
     "https://www.figma.com/api/mcp/asset/ca189ce3-6d51-437e-8700-d9c71c7af190.png",
-  "photo-frame.png":
+  "photo-frame.webp":
     "https://www.figma.com/api/mcp/asset/d443695a-2d07-4e79-ae57-89d42d18169b.png",
-  "portrait-frame.png":
+  "portrait-frame.webp":
     "https://www.figma.com/api/mcp/asset/c7738d47-7008-4060-831b-0fd61324a572.png",
-  "rose.png":
+  "rose.webp":
     "https://www.figma.com/api/mcp/asset/00ccdf57-faa7-4965-abe3-b97593d7435a.png",
-  "logo.png":
+  "logo.webp":
     "https://www.figma.com/api/mcp/asset/30565785-2ffe-43d2-a4a9-144f7cf395fe.png",
   "constitution-thumb.png":
     "https://www.figma.com/api/mcp/asset/53c28689-641c-4740-b48a-e5f66b7c14c7.png",
@@ -52,7 +52,7 @@ const assets = {
     "https://www.figma.com/api/mcp/asset/61ed1196-a429-4686-8cef-078e80d28c1f.png",
   "about-banner.png":
     "https://www.figma.com/api/mcp/asset/cfe9c0e5-dc00-418d-a2a9-7f2ce28f19e0.png",
-  "history-portrait.png":
+  "history-portrait.webp":
     "https://www.figma.com/api/mcp/asset/bb5b8d9b-5447-44e5-8a82-413e5a4ce615.png",
   "flower-literature.png":
     "https://www.figma.com/api/mcp/asset/a497eb7c-7119-4cde-bc4e-b0585ac3fd6b.png",

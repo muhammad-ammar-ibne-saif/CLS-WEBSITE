@@ -1,8 +1,8 @@
 const FRAME_ASSETS = new Set([
-  "/assets/video-frame.png",
-  "/assets/photo-frame.png",
-  "/assets/portrait-frame.png",
-  "/assets/history-portrait.png",
+  "/assets/video-frame.webp",
+  "/assets/photo-frame.webp",
+  "/assets/portrait-frame.webp",
+  "/assets/history-portrait.webp",
 ]);
 
 export const EVENT_COVERS = [

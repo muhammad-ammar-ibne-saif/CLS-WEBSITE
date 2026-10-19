@@ -18,7 +18,7 @@ export default async function MemberProfilePage({ params }) {
       <section className="hero">
         <div className="wrap stack">
           <img
-            src={member.avatar || "/assets/portrait-frame.png"}
+            src={member.avatar || "/assets/portrait-frame.webp"}
             alt=""
             width={120}
             height={120}

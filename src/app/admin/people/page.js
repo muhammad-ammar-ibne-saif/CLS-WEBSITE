@@ -23,7 +23,7 @@ export default async function AdminPeoplePage() {
       <div className="dash-cards">
         {pending.map((person) => (
           <article className="dash-card" key={person._id}>
-            <img src={person.avatar || "/assets/portrait-frame.png"} alt="" />
+            <img src={person.avatar || "/assets/portrait-frame.webp"} alt="" />
             <div>
               <h3>{person.name}</h3>
               <p>
@@ -77,7 +77,7 @@ export default async function AdminPeoplePage() {
       <div className="dash-cards">
         {rest.map((person) => (
           <article className="dash-card" key={person._id}>
-            <img src={person.avatar || "/assets/portrait-frame.png"} alt="" />
+            <img src={person.avatar || "/assets/portrait-frame.webp"} alt="" />
             <div>
               <h3>{person.name}</h3>
               <p>

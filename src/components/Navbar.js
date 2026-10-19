@@ -8,7 +8,7 @@ export default function Navbar({ settings, session }) {
   const [about, setAbout] = useState(false);
   const [events, setEvents] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const logo = settings?.logo || "/assets/logo.png";
+  const logo = settings?.logo || "/assets/logo.webp";
   const desk =
     session?.role === "admin" ? "/admin" : session?.status === "approved" ? "/me" : "/login";
 
