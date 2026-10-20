@@ -6,8 +6,10 @@ export default function JoinCta({ settings }) {
       <div className="pattern-box-inner">
         <img
           className="calligraphy"
-          src="/assets/calligraphy-cta.png"
-          alt="Urdu calligraphy"
+          src={settings?.ctaCalligraphy || "/assets/calligraphy-cta.png"}
+          alt=""
+          loading="lazy"
+          decoding="async"
         />
         <h2 className="display">{settings?.joinTitle || "CLS Is Waiting For “Your” Words. So Are We. Join Us Today."}</h2>
         <p className="lede">
@@ -15,7 +17,7 @@ export default function JoinCta({ settings }) {
             "Join a circle of readers, writers, and dreamers who believe literature is meant to be shared, lived, and remembered."}
         </p>
         <Link href="/register" className="btn btn-outline">
-          <img src="/assets/book-open.svg" alt="" width={16} height={16} />
+          <img src="/assets/book-open.svg" alt="" width={16} height={16}  loading="lazy" decoding="async" />
           {settings?.joinCta || "Register Yourself Now"}
         </Link>
       </div>

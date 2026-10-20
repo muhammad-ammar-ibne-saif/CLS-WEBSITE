@@ -4,6 +4,8 @@ import { getConstitutions, getPage } from "@/server/queries/public";
 
 export const metadata = { title: "Constitution" };
 
+export const revalidate = 300;
+
 export default async function ConstitutionPage() {
   const [page, constitutions] = await Promise.all([getPage("constitution"), getConstitutions()]);
   const download = constitutions[0]?.file || "/assets/constitution-thumb.png";
@@ -17,7 +19,7 @@ export default async function ConstitutionPage() {
             <p className="lede">{page.lede}</p>
           </div>
           <a className="btn btn-outline" href={download} download>
-            <img src="/assets/download.svg" alt="" width={16} height={16} />
+            <img src="/assets/download.svg" alt="" width={16} height={16}  loading="lazy" decoding="async" />
             Download Constitution PDF
           </a>
           <Ornament />
@@ -28,7 +30,7 @@ export default async function ConstitutionPage() {
         <div className="wrap">
           <div className="writers-head">
             {page.calligraphyImage ? (
-              <img className="calligraphy" src={page.calligraphyImage} alt="" />
+              <img className="calligraphy" src={page.calligraphyImage} alt=""  loading="lazy" decoding="async" />
             ) : null}
             <h2 className="headline">{page.headline}</h2>
             <p className="lede">{page.secondaryLede}</p>
@@ -37,14 +39,14 @@ export default async function ConstitutionPage() {
             {constitutions.map((item) => (
               <article className="writer-row" key={item.title}>
                 <div className="writer-meta">
-                  <img src={item.file} alt="" width={52} height={52} />
+                  <img src={item.file} alt="" width={52} height={52}  loading="lazy" decoding="async" />
                   <div>
                     <h3>{item.title}</h3>
                     <p>{item.credit}</p>
                   </div>
                 </div>
                 <a className="btn" href={item.file} download>
-                  <img src="/assets/download.svg" alt="" width={16} height={16} />
+                  <img src="/assets/download.svg" alt="" width={16} height={16}  loading="lazy" decoding="async" />
                   Download to Read
                 </a>
               </article>

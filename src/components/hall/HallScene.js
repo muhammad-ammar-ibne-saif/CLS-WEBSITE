@@ -13,8 +13,11 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
   const mountRef = useRef(null);
   const hudRef = useRef(onHud);
   const readyRef = useRef(onReady);
-  hudRef.current = onHud;
-  readyRef.current = onReady;
+
+  useEffect(() => {
+    hudRef.current = onHud;
+    readyRef.current = onReady;
+  });
 
   useEffect(() => {
     const host = mountRef.current;
@@ -133,7 +136,7 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
       return raycaster.intersectObjects(world.root.children, true);
     }
 
-    function useHit(hits) {
+    function activateHit(hits) {
       for (const hit of hits) {
         let obj = hit.object;
         while (obj) {
@@ -162,7 +165,7 @@ export default function HallScene({ rooms, inputRef, onHud, onReady }) {
       renderer.domElement.focus();
       audio.resume();
       const hits = hitFromPointer(e.clientX, e.clientY);
-      if (useHit(hits)) return;
+      if (activateHit(hits)) return;
       if (e.button === 0 && !locked && e.pointerType === "mouse") {
         renderer.domElement.requestPointerLock?.();
       }

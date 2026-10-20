@@ -4,6 +4,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import Ornament from "@/components/Ornament";
+import Frame from "@/components/Frame";
 
 const HallExperience = dynamic(() => import("@/components/hall/HallExperience"), {
   ssr: false,
@@ -15,8 +16,10 @@ const HallExperience = dynamic(() => import("@/components/hall/HallExperience"),
 });
 
 export default function HistoryView({ page, tenures }) {
-  const [open, setOpen] = useState(0);
-  const [hall, setHall] = useState(false);
+  const [view, setView] = useState({ open: 0, hall: false });
+  const { open, hall } = view;
+  const setOpen = (next) => setView((current) => ({ ...current, open: next }));
+  const setHall = (next) => setView((current) => ({ ...current, hall: next }));
 
   return (
     <>
@@ -27,7 +30,7 @@ export default function HistoryView({ page, tenures }) {
             <p className="lede">{page.lede}</p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
               <Link className="btn btn-outline" href="#wall">
-                <img src="/assets/blocks.svg" alt="" width={16} height={16} />
+                <img src="/assets/blocks.svg" alt="" width={16} height={16}  loading="lazy" decoding="async" />
                 See Wall of Heroes
               </Link>
               <button className="btn" type="button" onClick={() => setHall(true)}>
@@ -43,7 +46,7 @@ export default function HistoryView({ page, tenures }) {
         <div className="wrap">
           <div className="page-head">
             {page.calligraphyImage ? (
-              <img className="calligraphy lg" src={page.calligraphyImage} alt="" />
+              <img className="calligraphy lg" src={page.calligraphyImage} alt=""  loading="lazy" decoding="async" />
             ) : null}
             <h2 className="headline">{page.headline}</h2>
           </div>
@@ -68,13 +71,13 @@ export default function HistoryView({ page, tenures }) {
                       <h3>{tenure.title}</h3>
                       <p>President: {tenure.president}</p>
                     </div>
-                    <img src="/assets/chevron-down.svg" alt="" width={24} height={24} />
+                    <img src="/assets/chevron-down.svg" alt="" width={24} height={24}  loading="lazy" decoding="async" />
                   </button>
                   {tenure.summary ? (
                     <div className="acc-body">
                       <div className="tenure">
                         <div className="person">
-                          <img src={tenure.portrait || "/assets/history-portrait.webp"} alt="" />
+                          <Frame src={tenure.portrait} alt={tenure.president} />
                           <h3>{tenure.president}</h3>
                         </div>
                         <div>
@@ -87,7 +90,7 @@ export default function HistoryView({ page, tenures }) {
                       <div className="tenure-events">
                         {events.map((event, i) => (
                           <div className="person" key={`${event.name}-${i}`}>
-                            <img src={event.image || "/assets/portrait-frame.webp"} alt="" />
+                            <Frame src={event.image} alt={event.name} />
                             <h3>{event.name}</h3>
                           </div>
                         ))}

@@ -31,10 +31,17 @@ export async function requireSession() {
   return session;
 }
 
+export async function requireApplicant() {
+  const session = await requireSession();
+  if (session.role === ROLES.ADMIN) redirect("/admin");
+  if (session.status === ACCOUNT_STATUS.REJECTED) redirect("/login");
+  return session;
+}
+
 export async function requireApproved() {
   const session = await requireSession();
   if (session.role !== ROLES.ADMIN && session.status !== ACCOUNT_STATUS.APPROVED) {
-    redirect("/login?error=pending");
+    redirect("/staff/setup");
   }
   return session;
 }

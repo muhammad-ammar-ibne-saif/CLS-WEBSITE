@@ -32,7 +32,7 @@ export default async function AdminHistoryPage({ searchParams }) {
             </Link>
           ))}
         </div>
-        <ActionForm action={saveTenureAction} className="form dash-form">
+        <ActionForm key={current?._id || "new"} action={saveTenureAction} className="form dash-form">
           {current ? <input type="hidden" name="id" value={current._id} /> : null}
           <label>
             Title
@@ -46,7 +46,7 @@ export default async function AdminHistoryPage({ searchParams }) {
             President
             <input name="president" defaultValue={current?.president} required />
           </label>
-          <MediaField name="portrait" label="Portrait" defaultValue={current?.portrait} />
+          <MediaField library name="portrait" label="Portrait" defaultValue={current?.portrait} />
           <label>
             Summary
             <textarea name="summary" defaultValue={current?.summary} />
@@ -57,7 +57,7 @@ export default async function AdminHistoryPage({ searchParams }) {
             fields={[
               { key: "name", label: "Name" },
               { key: "note", label: "Note" },
-              { key: "image", label: "Image URL" },
+              { key: "image", label: "Image URL", media: true },
             ]}
             defaultRows={current?.events || []}
           />

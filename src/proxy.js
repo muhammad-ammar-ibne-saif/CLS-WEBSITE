@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { SESSION_COOKIE } from "@/config/constants";
 
-const PROTECTED = [/^\/admin(?:\/|$)/, /^\/me(?:\/|$)/, /^\/ec(?:\/|$)/];
+const PROTECTED = [/^\/admin(?:\/|$)/, /^\/me(?:\/|$)/, /^\/ec(?:\/|$)/, /^\/staff\/setup(?:\/|$)/];
 
 export function proxy(request) {
   const { pathname } = request.nextUrl;
@@ -19,5 +19,5 @@ export function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/me/:path*", "/ec/:path*"],
+  matcher: ["/admin/:path*", "/me/:path*", "/ec/:path*", "/staff/setup"],
 };

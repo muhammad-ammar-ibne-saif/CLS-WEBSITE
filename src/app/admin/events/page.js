@@ -2,6 +2,7 @@ import Link from "next/link";
 import DashShell from "@/components/admin/DashShell";
 import ActionForm from "@/components/admin/ActionForm";
 import MediaField from "@/components/admin/MediaField";
+import JsonRows from "@/components/admin/JsonRows";
 import { connectDb } from "@/lib/db";
 import { toPlain } from "@/lib/utils";
 import { Event } from "@/models/Event";
@@ -31,7 +32,7 @@ export default async function AdminEventsPage({ searchParams }) {
             </Link>
           ))}
         </div>
-        <ActionForm action={saveEventAction} className="form dash-form">
+        <ActionForm key={current?._id || "new"} action={saveEventAction} className="form dash-form">
           {current ? <input type="hidden" name="id" value={current._id} /> : null}
           <label>
             Title
@@ -53,7 +54,7 @@ export default async function AdminEventsPage({ searchParams }) {
             Starts
             <input type="datetime-local" name="startsAt" defaultValue={current?.startsAt?.slice?.(0, 16)} />
           </label>
-          <MediaField name="image" label="Cover" defaultValue={current?.image} />
+          <MediaField library name="image" label="Cover" defaultValue={current?.image} />
           <label>
             Summary
             <textarea name="summary" defaultValue={current?.summary} />
@@ -62,6 +63,15 @@ export default async function AdminEventsPage({ searchParams }) {
             Body
             <textarea name="body" defaultValue={current?.body} />
           </label>
+          <JsonRows
+            name="galleryJson"
+            label="Gallery pictures"
+            fields={[
+              { key: "image", label: "Image URL", media: true },
+              { key: "caption", label: "Caption" },
+            ]}
+            defaultRows={current?.gallery || []}
+          />
           <label>
             Order
             <input name="order" type="number" defaultValue={current?.order ?? 0} />

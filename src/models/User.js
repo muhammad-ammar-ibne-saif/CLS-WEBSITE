@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { ACCOUNT_STATUS, ROLES, TEAMS } from "@/config/constants";
+import { ACCOUNT_STATUS, EC_RANKS, ROLES, TEAMS } from "@/config/constants";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -10,6 +10,8 @@ const UserSchema = new mongoose.Schema(
     role: { type: String, enum: Object.values(ROLES), default: ROLES.STAFF, index: true },
     team: { type: String, enum: Object.values(TEAMS), default: undefined, index: true },
     office: { type: String, default: "", trim: true },
+    ecRank: { type: String, enum: [...Object.values(EC_RANKS), ""], default: "", index: true },
+    sortOrder: { type: Number, default: 0 },
     department: { type: String, default: "", trim: true },
     semester: { type: String, default: "", trim: true },
     rollNumber: { type: String, default: "", trim: true },

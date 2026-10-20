@@ -37,7 +37,7 @@ export default async function MemoriesPage() {
       <div className="dash-cards">
         {(user.memories || []).map((memory) => (
           <article className="dash-card" key={memory._id}>
-            <img src={memory.image} alt="" />
+            <img src={memory.image} alt=""  loading="lazy" decoding="async" />
             <div>
               <h3>{memory.event || "Memory"}</h3>
               <p className="body">{memory.caption}</p>

@@ -3,6 +3,12 @@ import { notFound } from "next/navigation";
 import SiteShell from "@/components/SiteShell";
 import { getWriting } from "@/server/queries/public";
 
+export const revalidate = 300;
+
+export function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const writer = await getWriting(slug);
@@ -18,7 +24,7 @@ export default async function WriterPage({ params }) {
     <SiteShell>
       <section className="hero">
         <div className="wrap stack">
-          <img src={writer.image} alt="" width={80} height={80} style={{ borderRadius: 8 }} />
+          <img src={writer.image} alt="" width={80} height={80} style={{ borderRadius: 8 }}  loading="lazy" decoding="async" />
           <h1 className="display">{writer.name}</h1>
           <p className="lede">{writer.role}</p>
           <p className="body" style={{ maxWidth: 640, textAlign: "center" }}>{writer.bio}</p>

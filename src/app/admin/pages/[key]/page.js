@@ -46,8 +46,8 @@ export default async function AdminPageEditor({ params }) {
           Body
           <textarea name="body" defaultValue={page.body} rows={8} />
         </label>
-        <MediaField name="heroImage" label="Hero / banner image" defaultValue={page.heroImage} />
-        <MediaField name="calligraphyImage" label="Calligraphy" defaultValue={page.calligraphyImage} />
+        <MediaField library name="heroImage" label="Hero / banner image" defaultValue={page.heroImage} />
+        <MediaField library name="calligraphyImage" label="Calligraphy" defaultValue={page.calligraphyImage} />
         <label>
           CTA label
           <input name="ctaLabel" defaultValue={page.ctaLabel} />

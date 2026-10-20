@@ -21,7 +21,7 @@ export default function Footer({ settings }) {
           </div>
         </div>
 
-        <img className="footer-rose" src="/assets/rose.webp" alt="Illustrated rose" />
+        <img className="footer-rose" src={settings?.footerRose || "/assets/rose.webp"} alt="" loading="lazy" decoding="async" />
 
         <div className="footer-cols">
           <div className="footer-col">

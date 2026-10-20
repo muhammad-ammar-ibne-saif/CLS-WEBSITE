@@ -5,6 +5,11 @@ export const defaultSettings = {
   siteName: "COMSATS Literary Society",
   tagline: "Promoting literature and poetry in COMSATS Lahore since 2016.",
   logo: "/assets/logo.webp",
+  homeVideo: "/assets/home-bg.mp4",
+  homeShowcase: "",
+  ctaCalligraphy: "/assets/calligraphy-cta.png",
+  frameArt: "",
+  footerRose: "/assets/rose.webp",
   joinTitle: "CLS Is Waiting For “Your” Words. So Are We. Join Us Today.",
   joinLede:
     "Join a circle of readers, writers, and dreamers who believe literature is meant to be shared, lived, and remembered.",
@@ -55,6 +60,9 @@ export const defaultPages = {
     title: "Led By Teams Who Are Always Ready to Step Forward For Literature",
     lede: "COMSATS Literary Society’s leadership always takes initiative and vision seriously. as its the only way forward in an environment where literature needs our effort to thrive.",
     headline: "Core Team (Tenure 2026 - 2027)",
+    secondaryHeadline: "Executive Council (Tenure 2026 - 2027)",
+    secondaryLede:
+      "The directorates, leads, and co-leads who carry every department of CLS through the year.",
     calligraphyImage: "/assets/calligraphy-leadership.png",
   },
   history: {

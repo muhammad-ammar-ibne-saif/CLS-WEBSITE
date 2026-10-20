@@ -1,9 +1,12 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
+import Frame from "@/components/Frame";
 import { getEvents, getPage } from "@/server/queries/public";
 
 export const metadata = { title: "Events" };
+
+export const revalidate = 300;
 
 export default async function EventsPage() {
   const [page, events] = await Promise.all([getPage("events"), getEvents()]);
@@ -21,16 +24,15 @@ export default async function EventsPage() {
 
       <section className="section" style={{ paddingTop: 40 }}>
         <div className="wrap">
-          <div className="video-stage">
-            <img className="frame" src={page.heroImage || "/assets/about-banner.png"} alt="" />
-            <span className="play-btn" aria-hidden="true">
-              <img src="/assets/play.svg" alt="" width={48} height={48} />
-            </span>
+          <div className="frame-stage">
+            <Frame variant="landscape" size="hero" src={page.heroImage} sizes="(max-width: 960px) 100vw, 840px" priority />
           </div>
           <div className="event-grid">
             {events.map((event) => (
               <article className="event-card" key={event.slug}>
-                <img className="cover" src={event.image} alt="" />
+                <Link className="frame-link" href={`/events/${event.slug}`} aria-label={event.title}>
+                  <Frame src={event.image} alt={event.title} />
+                </Link>
                 <h3>{event.title}</h3>
                 <p className="body">{event.summary}</p>
                 <Link className="btn" href={`/events/${event.slug}`}>See details</Link>

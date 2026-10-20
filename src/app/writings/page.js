@@ -5,6 +5,8 @@ import { getPage, getWritings } from "@/server/queries/public";
 
 export const metadata = { title: "Writings" };
 
+export const revalidate = 300;
+
 export default async function WritingsPage() {
   const [page, writers] = await Promise.all([getPage("writings"), getWritings()]);
   return (
@@ -25,7 +27,7 @@ export default async function WritingsPage() {
             {writers.map((writer) => (
               <article className="writer-row" key={writer.slug}>
                 <div className="writer-meta">
-                  <img src={writer.image} alt="" width={52} height={52} />
+                  <img src={writer.image} alt="" width={52} height={52}  loading="lazy" decoding="async" />
                   <div>
                     <h3>{writer.name}</h3>
                     <p>{writer.role}</p>

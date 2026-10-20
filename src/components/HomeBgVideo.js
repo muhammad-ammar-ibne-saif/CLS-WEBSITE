@@ -1,33 +1,52 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+
+function subscribe(query) {
+  return (notify) => {
+    const list = window.matchMedia(query);
+    list.addEventListener("change", notify);
+    return () => list.removeEventListener("change", notify);
+  };
+}
+
+function useMedia(query) {
+  return useSyncExternalStore(
+    subscribe(query),
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
+}
+
+function useSaveData() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => navigator.connection?.saveData === true,
+    () => false,
+  );
+}
 
 export default function HomeBgVideo({ src }) {
-  const ref = useRef(null);
+  const wide = useMedia("(min-width: 761px)");
+  const reduce = useMedia("(prefers-reduced-motion: reduce)");
+  const saver = useSaveData();
+  const [docked, setDocked] = useState(false);
+  const enabled = Boolean(src) && wide && !reduce && !saver;
 
   useEffect(() => {
-    const node = ref.current;
+    if (!enabled) return;
     const footer = document.querySelector(".footer");
-    if (!node || !footer) return;
+    if (!footer) return;
+    const observer = new IntersectionObserver(([entry]) => setDocked(entry.isIntersecting));
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, [enabled]);
 
-    const update = () => {
-      node.classList.toggle("is-docked", footer.getBoundingClientRect().top < window.innerHeight);
-    };
-
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-
-  if (!src) return null;
+  if (!enabled) return null;
 
   return (
-    <div className="home-wash" ref={ref} aria-hidden="true">
-      <video autoPlay muted loop playsInline preload="auto">
+    <div className={`home-wash${docked ? " is-docked" : ""}`} aria-hidden="true">
+      <video autoPlay muted loop playsInline preload="metadata">
         <source src={src} type="video/mp4" />
       </video>
     </div>

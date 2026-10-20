@@ -32,7 +32,7 @@ export default async function AdminWritingsPage({ searchParams }) {
             </Link>
           ))}
         </div>
-        <ActionForm action={saveWritingAction} className="form dash-form">
+        <ActionForm key={current?._id || "new"} action={saveWritingAction} className="form dash-form">
           {current ? <input type="hidden" name="id" value={current._id} /> : null}
           <label>
             Name
@@ -46,7 +46,7 @@ export default async function AdminWritingsPage({ searchParams }) {
             Role
             <input name="role" defaultValue={current?.role} />
           </label>
-          <MediaField name="image" label="Portrait" defaultValue={current?.image} />
+          <MediaField library name="image" label="Portrait" defaultValue={current?.image} />
           <label>
             Bio
             <textarea name="bio" defaultValue={current?.bio} />

@@ -1,9 +1,21 @@
 import { NextResponse } from "next/server";
 import { connectDb } from "@/lib/db";
+import { limited } from "@/lib/rate-limit";
 import { User } from "@/models/User";
 import { seedDatabase } from "@/server/seed";
 
-export async function POST() {
+export const dynamic = "force-dynamic";
+
+export async function POST(request) {
+  if (await limited("setup", 5, 10 * 60 * 1000)) {
+    return NextResponse.json({ error: "Too many attempts." }, { status: 429 });
+  }
+
+  const token = process.env.SETUP_TOKEN;
+  if (token && request.headers.get("x-setup-token") !== token) {
+    return NextResponse.json({ error: "Setup token required." }, { status: 401 });
+  }
+
   try {
     await connectDb();
     const existing = await User.countDocuments();
@@ -19,6 +31,10 @@ export async function POST() {
       message: `Admin ready at ${result.adminEmail}. Sign in, then change that password.`,
     });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const known = error.message?.startsWith("ADMIN_PASSWORD");
+    return NextResponse.json(
+      { error: known ? error.message : "Setup failed. Check the server log." },
+      { status: known ? 400 : 500 },
+    );
   }
 }

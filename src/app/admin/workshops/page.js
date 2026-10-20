@@ -31,7 +31,7 @@ export default async function AdminWorkshopsPage({ searchParams }) {
             </Link>
           ))}
         </div>
-        <ActionForm action={saveWorkshopAction} className="form dash-form">
+        <ActionForm key={current?._id || "new"} action={saveWorkshopAction} className="form dash-form">
           {current ? <input type="hidden" name="id" value={current._id} /> : null}
           <label>
             Title
@@ -60,7 +60,7 @@ export default async function AdminWorkshopsPage({ searchParams }) {
             Ends
             <input type="datetime-local" name="endsAt" defaultValue={current?.endsAt?.slice?.(0, 16)} />
           </label>
-          <MediaField name="coverImage" label="Cover" defaultValue={current?.coverImage} />
+          <MediaField library name="coverImage" label="Cover" defaultValue={current?.coverImage} />
           <label>
             Recording URL
             <input name="recordingUrl" defaultValue={current?.recordingUrl} />

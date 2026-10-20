@@ -22,7 +22,24 @@ export default async function AdminSitePage() {
           Tagline
           <textarea name="tagline" defaultValue={settings.tagline} />
         </label>
-        <MediaField name="logo" label="Logo" defaultValue={settings.logo} />
+        <MediaField library name="logo" label="Logo" defaultValue={settings.logo} />
+        <MediaField
+          library
+          name="homeVideo"
+          label="Home background video"
+          defaultValue={settings.homeVideo}
+          accept="video/mp4,video/webm"
+        />
+        <MediaField
+          library
+          name="homeShowcase"
+          label="Home showcase frame (image or video)"
+          defaultValue={settings.homeShowcase}
+          accept="image/*,video/mp4,video/webm"
+        />
+        <MediaField library name="frameArt" label="Custom frame border (optional, portrait image)" defaultValue={settings.frameArt} />
+        <MediaField library name="ctaCalligraphy" label="Join banner calligraphy" defaultValue={settings.ctaCalligraphy} />
+        <MediaField library name="footerRose" label="Footer illustration" defaultValue={settings.footerRose} />
         <label>
           Current semester
           <input name="currentSemester" defaultValue={settings.currentSemester} />

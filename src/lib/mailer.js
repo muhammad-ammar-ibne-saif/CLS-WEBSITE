@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { escapeHtml } from "@/lib/utils";
 
 function appUrl() {
   return (process.env.APP_URL || "http://localhost:3000").replace(/\/$/, "");
@@ -30,6 +31,7 @@ export async function sendMail({ to, subject, html, text }) {
 
 export function assignmentEmail({ name, planTitle, item, token }) {
   const url = `${appUrl()}/respond/${token}`;
+  const when = item.startsAt ? new Date(item.startsAt).toLocaleString() : "";
   return {
     subject: `CLS ${item.kind}: ${item.title}`,
     text: `Salaam ${name || "Director"},
@@ -37,19 +39,19 @@ export function assignmentEmail({ name, planTitle, item, token }) {
 A ${item.kind} on the ${planTitle} calendar needs your response.
 
 ${item.title}
-${item.startsAt ? `When: ${new Date(item.startsAt).toLocaleString()}` : ""}
+${when ? `When: ${when}` : ""}
 ${item.location ? `Where: ${item.location}` : ""}
 ${item.description || ""}
 
 Respond here: ${url}
 
 — COMSATS Literary Society`,
-    html: `<p>Salaam ${name || "Director"},</p>
-<p>A <strong>${item.kind}</strong> on the <strong>${planTitle}</strong> calendar needs your response.</p>
-<p><strong>${item.title}</strong><br/>
-${item.startsAt ? `When: ${new Date(item.startsAt).toLocaleString()}<br/>` : ""}
-${item.location ? `Where: ${item.location}<br/>` : ""}</p>
-<p>${item.description || ""}</p>
+    html: `<p>Salaam ${escapeHtml(name || "Director")},</p>
+<p>A <strong>${escapeHtml(item.kind)}</strong> on the <strong>${escapeHtml(planTitle)}</strong> calendar needs your response.</p>
+<p><strong>${escapeHtml(item.title)}</strong><br/>
+${when ? `When: ${escapeHtml(when)}<br/>` : ""}
+${item.location ? `Where: ${escapeHtml(item.location)}<br/>` : ""}</p>
+<p>${escapeHtml(item.description || "")}</p>
 <p><a href="${url}">Accept, decline, or reply</a></p>
 <p>— COMSATS Literary Society</p>`,
   };
@@ -61,12 +63,12 @@ export function approvalEmail({ name, approved, office }) {
     return {
       subject: "CLS account update",
       text: `Salaam ${name}, your Core/EC account request was not approved. Write to the current leadership if this looks wrong.`,
-      html: `<p>Salaam ${name},</p><p>Your Core/EC account request was not approved. Write to the current leadership if this looks wrong.</p>`,
+      html: `<p>Salaam ${escapeHtml(name)},</p><p>Your Core/EC account request was not approved. Write to the current leadership if this looks wrong.</p>`,
     };
   }
   return {
     subject: "Your CLS profile is live",
     text: `Salaam ${name}, your ${office || "CLS"} account is approved. Sign in at ${url} to publish your profile, memories, and portfolio.`,
-    html: `<p>Salaam ${name},</p><p>Your ${office || "CLS"} account is approved.</p><p><a href="${url}">Sign in</a> to publish your profile, memories, and portfolio.</p>`,
+    html: `<p>Salaam ${escapeHtml(name)},</p><p>Your ${escapeHtml(office || "CLS")} account is approved.</p><p><a href="${url}">Sign in</a> to publish your profile, memories, and portfolio.</p>`,
   };
 }

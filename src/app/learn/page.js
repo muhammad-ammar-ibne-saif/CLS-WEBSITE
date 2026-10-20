@@ -1,8 +1,11 @@
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
+import Frame from "@/components/Frame";
 import { getPage, getWorkshops } from "@/server/queries/public";
 
 export const metadata = { title: "Workshops" };
+
+export const revalidate = 300;
 
 export default async function LearnPage() {
   const [page, workshops] = await Promise.all([getPage("learn"), getWorkshops()]);
@@ -29,7 +32,7 @@ export default async function LearnPage() {
           <div className="event-grid">
             {upcoming.map((item) => (
               <article className="event-card" key={item.slug}>
-                {item.coverImage ? <img className="cover" src={item.coverImage} alt="" /> : null}
+                <Frame src={item.coverImage} alt={item.title} />
                 <h3>{item.title}</h3>
                 <p className="body">{item.summary}</p>
                 <p className="body">
@@ -46,7 +49,7 @@ export default async function LearnPage() {
           <div className="event-grid">
             {recordings.map((item) => (
               <article className="event-card" key={item.slug}>
-                {item.coverImage ? <img className="cover" src={item.coverImage} alt="" /> : null}
+                <Frame src={item.coverImage} alt={item.title} />
                 <h3>{item.title}</h3>
                 <p className="body">{item.summary}</p>
                 {item.recordingUrl ? (

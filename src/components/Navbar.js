@@ -3,14 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function Navbar({ settings, session }) {
+export default function Navbar({ settings }) {
   const [open, setOpen] = useState(false);
   const [about, setAbout] = useState(false);
   const [events, setEvents] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const logo = settings?.logo || "/assets/logo.webp";
-  const desk =
-    session?.role === "admin" ? "/admin" : session?.status === "approved" ? "/me" : "/login";
 
   useEffect(() => {
     const onScroll = () => {
@@ -73,8 +71,8 @@ export default function Navbar({ settings, session }) {
               Writings
             </Link>
 
-            <Link href={desk} className="nav-item" onClick={() => setOpen(false)}>
-              {session ? "Desk" : "Sign in"}
+            <Link href="/login" className="nav-item" onClick={() => setOpen(false)}>
+              Sign in
             </Link>
           </nav>
 

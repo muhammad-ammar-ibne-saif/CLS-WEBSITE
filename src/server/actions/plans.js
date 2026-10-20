@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { ACCOUNT_STATUS, PLAN_STATUS, RESPONSE_STATUS } from "@/config/constants";
 import { connectDb } from "@/lib/db";
 import { assignmentEmail, sendMail } from "@/lib/mailer";
-import { formString } from "@/lib/utils";
+import { formString, parseJsonList } from "@/lib/utils";
 import { Assignment } from "@/models/Assignment";
 import { SemesterPlan } from "@/models/SemesterPlan";
 import { User } from "@/models/User";
@@ -35,7 +35,7 @@ export async function savePlanAction(formData) {
   const session = await requireEc();
   await connectDb();
   const id = formString(formData, "id");
-  const items = JSON.parse(formString(formData, "itemsJson") || "[]");
+  const items = parseJsonList(formString(formData, "itemsJson"));
   const payload = {
     title: formString(formData, "title"),
     semester: formString(formData, "semester"),
@@ -64,18 +64,25 @@ export async function publishPlanAction(formData) {
   plan.publishedAt = new Date();
   await plan.save();
 
+  let invited = 0;
+  let failed = 0;
   for (const item of plan.items) {
     const directors = await directorsForItem(item);
-    for (const director of directors) {
-      const token = crypto.randomBytes(24).toString("hex");
-      try {
-        await Assignment.create({
-          plan: plan._id,
-          itemId: item._id,
-          user: director._id,
-          email: director.email,
-          token,
-        });
+    const results = await Promise.allSettled(
+      directors.map(async (director) => {
+        const token = crypto.randomBytes(24).toString("hex");
+        try {
+          await Assignment.create({
+            plan: plan._id,
+            itemId: item._id,
+            user: director._id,
+            email: director.email,
+            token,
+          });
+        } catch (error) {
+          if (error.code === 11000) return "skipped";
+          throw error;
+        }
         const mail = assignmentEmail({
           name: director.name,
           planTitle: plan.title,
@@ -83,13 +90,18 @@ export async function publishPlanAction(formData) {
           token,
         });
         await sendMail({ to: director.email, ...mail });
-      } catch (error) {
-        if (error.code !== 11000) throw error;
-      }
+        return "sent";
+      }),
+    );
+    for (const result of results) {
+      if (result.status === "rejected") failed += 1;
+      else if (result.value === "sent") invited += 1;
     }
   }
+
   refreshPlans();
-  return { ok: true };
+  if (failed) return { ok: true, note: `${invited} invitations sent, ${failed} could not be delivered.` };
+  return { ok: true, note: `${invited} invitations sent.` };
 }
 
 export async function deletePlanAction(formData) {
@@ -113,10 +125,11 @@ export async function respondAssignmentAction(formData) {
     return { error: "Choose a response." };
   }
   await connectDb();
+  if (!/^[a-f0-9]{48}$/.test(token)) return { error: "This invitation is no longer valid." };
   const assignment = await Assignment.findOne({ token });
   if (!assignment) return { error: "This invitation is no longer valid." };
   assignment.status = status;
-  assignment.note = note;
+  assignment.note = note.slice(0, 600);
   assignment.respondedAt = new Date();
   await assignment.save();
   refreshPlans();
@@ -131,8 +144,12 @@ export async function respondAsDirectorAction(formData) {
     user: session._id,
   });
   if (!assignment) return { error: "Assignment not found." };
-  assignment.status = formString(formData, "status");
-  assignment.note = formString(formData, "note");
+  const status = formString(formData, "status");
+  if (!Object.values(RESPONSE_STATUS).includes(status) || status === RESPONSE_STATUS.PENDING) {
+    return { error: "Choose a response." };
+  }
+  assignment.status = status;
+  assignment.note = formString(formData, "note").slice(0, 600);
   assignment.respondedAt = new Date();
   await assignment.save();
   refreshPlans();

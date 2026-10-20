@@ -31,7 +31,7 @@ export default async function AdminConstitutionPage({ searchParams }) {
             </Link>
           ))}
         </div>
-        <ActionForm action={saveConstitutionAction} className="form dash-form">
+        <ActionForm key={current?._id || "new"} action={saveConstitutionAction} className="form dash-form">
           {current ? <input type="hidden" name="id" value={current._id} /> : null}
           <label>
             Title
@@ -45,7 +45,7 @@ export default async function AdminConstitutionPage({ searchParams }) {
             Credit
             <input name="credit" defaultValue={current?.credit} />
           </label>
-          <MediaField name="file" label="File / thumbnail" defaultValue={current?.file} accept="image/*,.pdf" />
+          <MediaField library name="file" label="File / thumbnail" defaultValue={current?.file} accept="image/*,.pdf" />
           <label>
             Order
             <input name="order" type="number" defaultValue={current?.order ?? 0} />

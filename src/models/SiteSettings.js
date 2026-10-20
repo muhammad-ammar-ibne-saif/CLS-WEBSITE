@@ -6,6 +6,11 @@ const SiteSettingsSchema = new mongoose.Schema(
     siteName: { type: String, default: "COMSATS Literary Society" },
     tagline: { type: String, default: "Promoting literature and poetry in COMSATS Lahore since 2016." },
     logo: { type: String, default: "/assets/logo.webp" },
+    homeVideo: { type: String, default: "/assets/home-bg.mp4" },
+    homeShowcase: { type: String, default: "" },
+    ctaCalligraphy: { type: String, default: "/assets/calligraphy-cta.png" },
+    frameArt: { type: String, default: "" },
+    footerRose: { type: String, default: "/assets/rose.webp" },
     joinTitle: { type: String, default: "CLS Is Waiting For “Your” Words. So Are We. Join Us Today." },
     joinLede: {
       type: String,

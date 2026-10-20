@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# COMSATS Literary Society website
 
-## Getting Started
+Next.js 16 App Router site with a built in CMS, member desks, Executive Council profiles and a 3D Hall of Years.
 
-First, run the development server:
+## Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Copy `.env.example` to `.env.local` and fill it in. `ADMIN_PASSWORD` must be unique and at least 10 characters. Set `SETUP_TOKEN` in production.
+2. `npm install`
+3. `npm run dev`
+4. First run only: `npm run setup`. With `SETUP_TOKEN` set, send it as the `x-setup-token` header instead.
+5. Sign in at `/login` with `ADMIN_EMAIL` and `ADMIN_PASSWORD`, then change that password.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How content works
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Every public page reads from MongoDB through cached queries (5 minute revalidate, cleared instantly when admin saves). If the database is empty or unreachable, starter copy from `src/config/defaults.js` is shown.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Admin (`/admin`) controls site settings, home background video and showcase frame, every page's copy and images, events with galleries, workshops, writings, history tenures, constitution files, people, and the media library (`/admin/media`).
 
-## Learn More
+## Leadership
 
-To learn more about Next.js, take a look at the following resources:
+Core members and Executive Council members create an account at `/staff/apply`, then fill their profile at `/staff/setup` (portrait, bio, position). They appear on `/leadership` only after admin approves them at `/admin/people`. Executive Council is shown under Core as Directorates, Leads, then Co-Leads. Admin can reorder anyone with the order field.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Media
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Uploads go to GridFS. Images are resized to 2000px and converted to WebP, videos stream with range requests. Every image or video shown inside a bordered photo frame is placed in the frame window, centered and cropped to fit, so any aspect ratio works.

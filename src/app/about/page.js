@@ -1,9 +1,12 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
+import Frame from "@/components/Frame";
 import { getPage } from "@/server/queries/public";
 
 export const metadata = { title: "About" };
+
+export const revalidate = 300;
 
 export default async function AboutPage() {
   const page = await getPage("about");
@@ -26,21 +29,18 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {page.heroImage ? (
-        <section className="banner-frame is-framed">
-          <div className="video-stage-rotator" aria-hidden="true">
-            <img src="/assets/video-frame.webp" alt="" />
-          </div>
-          <img className="banner" src={page.heroImage} alt="" />
-        </section>
-      ) : null}
+      <section className="wrap">
+        <div className="frame-stage">
+          <Frame variant="landscape" size="hero" src={page.heroImage} sizes="(max-width: 960px) 100vw, 840px" priority />
+        </div>
+      </section>
 
       <section className="section story">
         <div className="wrap stack">
           <p className="eyebrow">{page.eyebrow || "OUR STORY"}</p>
           <h2 className="headline center">{page.headline}</h2>
           <p className="center">{page.body}</p>
-          {page.calligraphyImage ? <img className="calligraphy lg" src={page.calligraphyImage} alt="" /> : null}
+          {page.calligraphyImage ? <img className="calligraphy lg" src={page.calligraphyImage} alt=""  loading="lazy" decoding="async" /> : null}
           <Ornament />
         </div>
       </section>
@@ -54,7 +54,7 @@ export default async function AboutPage() {
           <div className="values">
             {(page.cards || []).map((card) => (
               <article className="value-card" key={card.title}>
-                {card.image ? <img src={card.image} alt="" width={80} height={80} /> : null}
+                {card.image ? <img src={card.image} alt="" width={80} height={80}  loading="lazy" decoding="async" /> : null}
                 <h3>{card.title}</h3>
                 <p>{card.body}</p>
               </article>

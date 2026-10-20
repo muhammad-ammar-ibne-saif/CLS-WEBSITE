@@ -1,9 +1,12 @@
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
+import Frame from "@/components/Frame";
 import { getPage, getPublicMembers } from "@/server/queries/public";
 
 export const metadata = { title: "Members" };
+
+export const revalidate = 300;
 
 export default async function MembersPage() {
   const [page, people] = await Promise.all([getPage("members"), getPublicMembers()]);
@@ -23,12 +26,11 @@ export default async function MembersPage() {
           <div className="team-grid">
             {people.map((person) => (
               <Link className="person" key={person._id} href={`/members/${person.slug || person._id}`}>
-                <img src={person.avatar || "/assets/portrait-frame.webp"} alt={person.name} />
-                <div>
+                <Frame src={person.avatar} alt={person.name} />
+                <div className="person-meta">
                   <h3>{person.name}</h3>
-                  <p>
-                    {person.office || person.team} · {person.semester}
-                  </p>
+                  <p>{person.office || person.team}</p>
+                  {person.semester ? <small>{person.semester}</small> : null}
                 </div>
               </Link>
             ))}

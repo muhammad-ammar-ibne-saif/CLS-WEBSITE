@@ -11,6 +11,7 @@ const links = [
   { href: "/admin/constitution", label: "Constitution" },
   { href: "/admin/workshops", label: "Workshops" },
   { href: "/admin/people", label: "People" },
+  { href: "/admin/media", label: "Media library" },
   { href: "/admin/join-requests", label: "Join inbox" },
   { href: "/ec", label: "Semester plan" },
 ];

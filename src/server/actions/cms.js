@@ -1,10 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { PAGE_KEYS } from "@/config/constants";
 import { connectDb } from "@/lib/db";
 import { uniqueSlug } from "@/lib/slugify";
-import { formBool, formString } from "@/lib/utils";
+import { formBool, formNumber, formString, parseJsonList } from "@/lib/utils";
 import { Constitution } from "@/models/Constitution";
 import { Event } from "@/models/Event";
 import { Page } from "@/models/Page";
@@ -15,7 +15,20 @@ import { Writing } from "@/models/Writing";
 import { requireAdmin } from "@/server/dal";
 
 function refresh() {
+  updateTag("cms");
   revalidatePath("/", "layout");
+}
+
+async function persist(Model, id, payload) {
+  try {
+    if (id) await Model.findByIdAndUpdate(id, payload, { runValidators: true });
+    else await Model.create(payload);
+  } catch (error) {
+    if (error?.code === 11000) return { error: "That slug is already used. Choose another." };
+    return { error: "Could not save. Check the fields and try again." };
+  }
+  refresh();
+  return { ok: true };
 }
 
 export async function saveSettingsAction(formData) {
@@ -25,6 +38,11 @@ export async function saveSettingsAction(formData) {
     siteName: formString(formData, "siteName"),
     tagline: formString(formData, "tagline"),
     logo: formString(formData, "logo"),
+    homeVideo: formString(formData, "homeVideo"),
+    homeShowcase: formString(formData, "homeShowcase"),
+    ctaCalligraphy: formString(formData, "ctaCalligraphy"),
+    frameArt: formString(formData, "frameArt"),
+    footerRose: formString(formData, "footerRose"),
     joinTitle: formString(formData, "joinTitle"),
     joinLede: formString(formData, "joinLede"),
     joinCta: formString(formData, "joinCta"),
@@ -46,8 +64,6 @@ export async function savePageAction(formData) {
   const key = formString(formData, "key");
   if (!PAGE_KEYS.includes(key)) return { error: "Unknown page." };
   await connectDb();
-  const stats = formString(formData, "statsJson");
-  const cards = formString(formData, "cardsJson");
   await Page.findOneAndUpdate(
     { key },
     {
@@ -63,8 +79,8 @@ export async function savePageAction(formData) {
       calligraphyImage: formString(formData, "calligraphyImage"),
       ctaLabel: formString(formData, "ctaLabel"),
       ctaHref: formString(formData, "ctaHref"),
-      stats: stats ? JSON.parse(stats) : [],
-      cards: cards ? JSON.parse(cards) : [],
+      stats: parseJsonList(formString(formData, "statsJson")),
+      cards: parseJsonList(formString(formData, "cardsJson")),
     },
     { upsert: true },
   );
@@ -87,13 +103,11 @@ export async function saveEventAction(formData) {
     body: formString(formData, "body"),
     location: formString(formData, "location"),
     startsAt: formString(formData, "startsAt") || null,
+    gallery: parseJsonList(formString(formData, "galleryJson")).filter((row) => row.image),
     published: formBool(formData, "published"),
-    order: Number(formString(formData, "order") || 0),
+    order: formNumber(formData, "order"),
   };
-  if (id) await Event.findByIdAndUpdate(id, payload);
-  else await Event.create(payload);
-  refresh();
-  return { ok: true };
+  return persist(Event, id, payload);
 }
 
 export async function deleteEventAction(formData) {
@@ -109,7 +123,6 @@ export async function saveWritingAction(formData) {
   const id = formString(formData, "id");
   const name = formString(formData, "name");
   const slug = formString(formData, "slug") || (await uniqueSlug(Writing, name, id || undefined));
-  const piecesRaw = formString(formData, "piecesJson") || "[]";
   const payload = {
     name,
     slug,
@@ -117,13 +130,10 @@ export async function saveWritingAction(formData) {
     image: formString(formData, "image"),
     bio: formString(formData, "bio"),
     published: formBool(formData, "published"),
-    order: Number(formString(formData, "order") || 0),
-    pieces: JSON.parse(piecesRaw),
+    order: formNumber(formData, "order"),
+    pieces: parseJsonList(formString(formData, "piecesJson")),
   };
-  if (id) await Writing.findByIdAndUpdate(id, payload);
-  else await Writing.create(payload);
-  refresh();
-  return { ok: true };
+  return persist(Writing, id, payload);
 }
 
 export async function deleteWritingAction(formData) {
@@ -137,7 +147,6 @@ export async function saveTenureAction(formData) {
   await requireAdmin();
   await connectDb();
   const id = formString(formData, "id");
-  const eventsRaw = formString(formData, "eventsJson") || "[]";
   const payload = {
     title: formString(formData, "title"),
     president: formString(formData, "president"),
@@ -145,13 +154,10 @@ export async function saveTenureAction(formData) {
     summary: formString(formData, "summary"),
     portrait: formString(formData, "portrait"),
     published: formBool(formData, "published"),
-    order: Number(formString(formData, "order") || 0),
-    events: JSON.parse(eventsRaw),
+    order: formNumber(formData, "order"),
+    events: parseJsonList(formString(formData, "eventsJson")),
   };
-  if (id) await Tenure.findByIdAndUpdate(id, payload);
-  else await Tenure.create(payload);
-  refresh();
-  return { ok: true };
+  return persist(Tenure, id, payload);
 }
 
 export async function deleteTenureAction(formData) {
@@ -170,12 +176,9 @@ export async function saveConstitutionAction(formData) {
     credit: formString(formData, "credit"),
     file: formString(formData, "file"),
     year: formString(formData, "year"),
-    order: Number(formString(formData, "order") || 0),
+    order: formNumber(formData, "order"),
   };
-  if (id) await Constitution.findByIdAndUpdate(id, payload);
-  else await Constitution.create(payload);
-  refresh();
-  return { ok: true };
+  return persist(Constitution, id, payload);
 }
 
 export async function deleteConstitutionAction(formData) {
@@ -205,12 +208,9 @@ export async function saveWorkshopAction(formData) {
     recordingUrl: formString(formData, "recordingUrl"),
     materialsUrl: formString(formData, "materialsUrl"),
     published: formBool(formData, "published"),
-    order: Number(formString(formData, "order") || 0),
+    order: formNumber(formData, "order"),
   };
-  if (id) await Workshop.findByIdAndUpdate(id, payload);
-  else await Workshop.create(payload);
-  refresh();
-  return { ok: true };
+  return persist(Workshop, id, payload);
 }
 
 export async function deleteWorkshopAction(formData) {

@@ -9,6 +9,12 @@ const EventSchema = new mongoose.Schema(
     summary: { type: String, default: "" },
     body: { type: String, default: "" },
     startsAt: Date,
+    gallery: [
+      {
+        image: String,
+        caption: String,
+      },
+    ],
     location: { type: String, default: "" },
     published: { type: Boolean, default: true, index: true },
     order: { type: Number, default: 0 },

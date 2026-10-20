@@ -15,6 +15,26 @@ export const ACCOUNT_STATUS = {
   SUSPENDED: "suspended",
 };
 
+export const EC_RANKS = {
+  DIRECTOR: "director",
+  LEAD: "lead",
+  COLEAD: "colead",
+};
+
+export const EC_RANK_ORDER = [EC_RANKS.DIRECTOR, EC_RANKS.LEAD, EC_RANKS.COLEAD];
+
+export const EC_RANK_LABELS = {
+  [EC_RANKS.DIRECTOR]: "Director",
+  [EC_RANKS.LEAD]: "Lead",
+  [EC_RANKS.COLEAD]: "Co-Lead",
+};
+
+export const EC_RANK_HEADINGS = {
+  [EC_RANKS.DIRECTOR]: "Directorates",
+  [EC_RANKS.LEAD]: "Leads",
+  [EC_RANKS.COLEAD]: "Co-Leads",
+};
+
 export const PLAN_STATUS = {
   DRAFT: "draft",
   PUBLISHED: "published",

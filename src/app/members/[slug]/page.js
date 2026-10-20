@@ -1,6 +1,13 @@
 import { notFound } from "next/navigation";
 import SiteShell from "@/components/SiteShell";
+import Frame from "@/components/Frame";
 import { getMemberBySlug } from "@/server/queries/public";
+
+export const revalidate = 300;
+
+export function generateStaticParams() {
+  return [];
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -17,13 +24,9 @@ export default async function MemberProfilePage({ params }) {
     <SiteShell>
       <section className="hero">
         <div className="wrap stack">
-          <img
-            src={member.avatar || "/assets/portrait-frame.webp"}
-            alt=""
-            width={120}
-            height={120}
-            style={{ borderRadius: 12 }}
-          />
+          <div className="frame-narrow">
+            <Frame src={member.avatar} alt={member.name} size="hero" sizes="(max-width: 960px) 80vw, 420px" priority />
+          </div>
           <p className="eyebrow">{member.team} · {member.semester}</p>
           <h1 className="display">{member.name}</h1>
           <p className="lede">{member.office || member.headline}</p>
@@ -42,7 +45,7 @@ export default async function MemberProfilePage({ params }) {
             <div className="event-grid">
               {member.memories.map((memory) => (
                 <article className="event-card" key={memory._id}>
-                  <img className="cover" src={memory.image} alt="" />
+                  <Frame src={memory.image} alt={memory.event || "Memory"} />
                   <h3>{memory.event || "Memory"}</h3>
                   <p className="body">{memory.caption}</p>
                 </article>

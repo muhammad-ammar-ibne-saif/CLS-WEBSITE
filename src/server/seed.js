@@ -24,9 +24,12 @@ export async function seedDatabase() {
   await connectDb();
 
   const adminEmail = (process.env.ADMIN_EMAIL || "admin@cls.local").toLowerCase();
-  const adminPassword = process.env.ADMIN_PASSWORD || "change-me-now";
+  const adminPassword = process.env.ADMIN_PASSWORD || "";
   let admin = await User.findOne({ email: adminEmail });
   if (!admin) {
+    if (adminPassword.length < 10 || adminPassword === "change-me-now") {
+      throw new Error("ADMIN_PASSWORD must be set to a unique value of at least 10 characters before setup.");
+    }
     admin = await User.create({
       name: "CLS Administrator",
       email: adminEmail,
@@ -42,10 +45,16 @@ export async function seedDatabase() {
     });
   }
 
-  await SiteSettings.findOneAndUpdate({ key: "global" }, defaultSettings, { upsert: true });
+  const { key: settingsKey, ...settingsDefaults } = defaultSettings;
+  await SiteSettings.findOneAndUpdate(
+    { key: settingsKey },
+    { $setOnInsert: settingsDefaults },
+    { upsert: true },
+  );
 
   for (const key of PAGE_KEYS) {
-    await Page.findOneAndUpdate({ key }, defaultPages[key], { upsert: true, setDefaultsOnInsert: true });
+    const { key: pageKey, ...pageDefaults } = defaultPages[key];
+    await Page.findOneAndUpdate({ key: pageKey }, { $setOnInsert: pageDefaults }, { upsert: true });
   }
 
   if ((await Event.countDocuments()) === 0) {
@@ -66,5 +75,5 @@ export async function seedDatabase() {
     );
   }
 
-  return { adminEmail, createdAdmin: Boolean(admin) };
+  return { adminEmail };
 }
