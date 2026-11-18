@@ -119,7 +119,23 @@ export const defaultPages = {
   },
 };
 
-export const defaultMagazines = [];
+// Issues shipped with the site (files in /public/magazines). They are always listed,
+// alongside any issues uploaded through /admin/magazines (an uploaded issue with the
+// same slug replaces the built-in one).
+export const defaultMagazines = [
+  {
+    title: "IN'IKAAS",
+    slug: "inikaas",
+    issue: "Issue 01 · Fall 2026",
+    summary:
+      "Voices. Thoughts. Stories. Reflected. Poetry, fiction, reflections, investigative journalism and book reviews from the students of COMSATS Lahore.",
+    cover: "/magazines/inikaas-cover.webp",
+    file: "/magazines/inikaas.pdf",
+    publishedOn: "2026-11-18",
+    published: true,
+    order: 0,
+  },
+];
 
 export const defaultLeadership = leadership;
 export const defaultEvents = events;

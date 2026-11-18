@@ -138,7 +138,8 @@ export async function isComingSoon(key) {
 export async function getMagazines() {
   return guarded(async () => {
     const rows = await loadMagazines();
-    return rows.length ? rows : defaultMagazines;
+    const uploaded = new Set(rows.map((row) => row.slug));
+    return [...rows, ...defaultMagazines.filter((issue) => !uploaded.has(issue.slug))];
   }, defaultMagazines);
 }
 
