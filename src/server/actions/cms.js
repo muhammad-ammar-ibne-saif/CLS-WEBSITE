@@ -1,12 +1,13 @@
 "use server";
 
 import { revalidatePath, updateTag } from "next/cache";
-import { PAGE_KEYS } from "@/config/constants";
+import { GATED_PAGES, PAGE_KEYS } from "@/config/constants";
 import { connectDb } from "@/lib/db";
 import { uniqueSlug } from "@/lib/slugify";
 import { formBool, formNumber, formString, parseJsonList } from "@/lib/utils";
 import { Constitution } from "@/models/Constitution";
 import { Event } from "@/models/Event";
+import { Magazine } from "@/models/Magazine";
 import { Page } from "@/models/Page";
 import { SiteSettings } from "@/models/SiteSettings";
 import { Tenure } from "@/models/Tenure";
@@ -57,6 +58,57 @@ export async function saveSettingsAction(formData) {
   await SiteSettings.findOneAndUpdate({ key: "global" }, payload, { upsert: true });
   refresh();
   return { ok: true };
+}
+
+export async function saveVisibilityAction(formData) {
+  await requireAdmin();
+  await connectDb();
+  const known = new Set(GATED_PAGES.map((page) => page.key));
+  const comingSoon = formData
+    .getAll("comingSoon")
+    .map((value) => String(value))
+    .filter((key) => known.has(key));
+  await SiteSettings.findOneAndUpdate(
+    { key: "global" },
+    {
+      comingSoon,
+      comingSoonTitle: formString(formData, "comingSoonTitle"),
+      comingSoonLede: formString(formData, "comingSoonLede"),
+    },
+    { upsert: true },
+  );
+  refresh();
+  return { ok: true };
+}
+
+export async function saveMagazineAction(formData) {
+  await requireAdmin();
+  await connectDb();
+  const id = formString(formData, "id");
+  const title = formString(formData, "title");
+  if (!title) return { error: "Give the issue a title." };
+  const file = formString(formData, "file");
+  if (!file) return { error: "Upload the magazine PDF first." };
+  const slug = formString(formData, "slug") || (await uniqueSlug(Magazine, title, id || undefined));
+  const payload = {
+    title,
+    slug,
+    issue: formString(formData, "issue"),
+    summary: formString(formData, "summary"),
+    cover: formString(formData, "cover"),
+    file,
+    publishedOn: formString(formData, "publishedOn") || null,
+    published: formBool(formData, "published"),
+    order: formNumber(formData, "order"),
+  };
+  return persist(Magazine, id, payload);
+}
+
+export async function deleteMagazineAction(formData) {
+  await requireAdmin();
+  await connectDb();
+  await Magazine.findByIdAndDelete(formString(formData, "id"));
+  refresh();
 }
 
 export async function savePageAction(formData) {

@@ -27,6 +27,7 @@ export default function Footer({ settings }) {
           <div className="footer-col">
             <h4>WRITERS</h4>
             <Link href="/writings">Our Writers</Link>
+            <Link href="/magazine">Magazine</Link>
             <Link href="/staff/apply">Core & EC desk</Link>
           </div>
           <div className="footer-col">

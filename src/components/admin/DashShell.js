@@ -4,7 +4,9 @@ import { logoutAction } from "@/server/actions/auth";
 const links = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/site", label: "Site & CTA" },
+  { href: "/admin/visibility", label: "Page visibility" },
   { href: "/admin/pages", label: "Page copy" },
+  { href: "/admin/magazines", label: "Magazine" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/writings", label: "Writings" },
   { href: "/admin/history", label: "History" },

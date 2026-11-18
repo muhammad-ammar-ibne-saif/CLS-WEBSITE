@@ -8,6 +8,8 @@ export const dynamic = "force-dynamic";
 
 const MAX_BYTES = 40 * 1024 * 1024;
 const MAX_PENDING_BYTES = 8 * 1024 * 1024;
+// Magazine issues are image-heavy PDFs, so admins get more room for them.
+const MAX_ADMIN_PDF_BYTES = 150 * 1024 * 1024;
 
 export async function POST(request) {
   const session = await getSession();
@@ -36,7 +38,8 @@ export async function POST(request) {
   if (!file || typeof file === "string") {
     return NextResponse.json({ error: "Choose a file." }, { status: 400 });
   }
-  const cap = isPending ? MAX_PENDING_BYTES : MAX_BYTES;
+  const isPdf = file.type === "application/pdf" || /\.pdf$/i.test(file.name || "");
+  const cap = isPending ? MAX_PENDING_BYTES : isAdmin && isPdf ? MAX_ADMIN_PDF_BYTES : MAX_BYTES;
   if (file.size > cap) {
     return NextResponse.json(
       { error: `File must be under ${Math.round(cap / 1024 / 1024)}MB.` },

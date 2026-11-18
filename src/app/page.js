@@ -1,14 +1,16 @@
+import ComingSoon from "@/components/ComingSoon";
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
 import Frame from "@/components/Frame";
 import { members as fallbackFaces } from "@/data/site";
 import { isVideoUrl } from "@/lib/utils";
-import { getEvents, getLeadership, getPage, getSettings, getWritings } from "@/server/queries/public";
+import { getEvents, getLeadership, getPage, getSettings, getWritings, isComingSoon } from "@/server/queries/public";
 
 export const revalidate = 300;
 
 export default async function HomePage() {
+  if (await isComingSoon("home")) return <ComingSoon pageKey="home" />;
   const [settings, page, events, writers, people] = await Promise.all([
     getSettings(),
     getPage("home"),

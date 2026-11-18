@@ -74,6 +74,22 @@ export const PAGE_KEYS = [
   "learn",
   "register",
   "members",
+  "magazine",
+];
+
+// Public pages the admin can switch to a "Coming soon" placeholder from /admin/site.
+export const GATED_PAGES = [
+  { key: "home", label: "Home", href: "/" },
+  { key: "about", label: "About", href: "/about" },
+  { key: "constitution", label: "Constitution", href: "/constitution" },
+  { key: "leadership", label: "Leadership", href: "/leadership" },
+  { key: "members", label: "Members", href: "/members" },
+  { key: "events", label: "Events", href: "/events" },
+  { key: "history", label: "History", href: "/history" },
+  { key: "learn", label: "Workshops", href: "/learn" },
+  { key: "writings", label: "Writings", href: "/writings" },
+  { key: "magazine", label: "Magazine", href: "/magazine" },
+  { key: "register", label: "Register", href: "/register" },
 ];
 
 export const SESSION_COOKIE = "cls_session";
@@ -86,5 +102,6 @@ export const PUBLIC_NAV = [
   { href: "/history", label: "History" },
   { href: "/learn", label: "Workshops" },
   { href: "/writings", label: "Writings" },
+  { href: "/magazine", label: "Magazine" },
   { href: "/members", label: "Members" },
 ];

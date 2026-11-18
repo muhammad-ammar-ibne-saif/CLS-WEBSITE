@@ -1,8 +1,9 @@
+import ComingSoon from "@/components/ComingSoon";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteShell from "@/components/SiteShell";
 import Frame from "@/components/Frame";
-import { getEvent } from "@/server/queries/public";
+import { getEvent, isComingSoon } from "@/server/queries/public";
 
 export const revalidate = 300;
 
@@ -17,6 +18,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function EventDetailPage({ params }) {
+  if (await isComingSoon("events")) return <ComingSoon pageKey="events" />;
   const { slug } = await params;
   const event = await getEvent(slug);
   if (!event) notFound();

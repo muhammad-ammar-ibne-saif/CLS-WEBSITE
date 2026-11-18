@@ -1,13 +1,15 @@
+import ComingSoon from "@/components/ComingSoon";
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
-import { getPage, getWritings } from "@/server/queries/public";
+import { getPage, getWritings, isComingSoon } from "@/server/queries/public";
 
 export const metadata = { title: "Writings" };
 
 export const revalidate = 300;
 
 export default async function WritingsPage() {
+  if (await isComingSoon("writings")) return <ComingSoon pageKey="writings" />;
   const [page, writers] = await Promise.all([getPage("writings"), getWritings()]);
   return (
     <SiteShell>

@@ -71,15 +71,21 @@ export default function Navbar({ settings }) {
               Writings
             </Link>
 
+            <Link href="/magazine" className="nav-item" onClick={() => setOpen(false)}>
+              Magazine
+            </Link>
+
             <Link href="/login" className="nav-item" onClick={() => setOpen(false)}>
               Sign in
             </Link>
           </nav>
 
-          <Link href="/register" className="btn btn-outline nav-cta" onClick={() => setOpen(false)}>
-            <img src="/assets/book-open.svg" alt="" width={16} height={16} />
-            {settings?.joinCta || "Register Yourself Now"}
-          </Link>
+          {(settings?.comingSoon || []).includes("register") ? null : (
+            <Link href="/register" className="btn btn-outline nav-cta" onClick={() => setOpen(false)}>
+              <img src="/assets/book-open.svg" alt="" width={16} height={16} />
+              {settings?.joinCta || "Register Yourself Now"}
+            </Link>
+          )}
         </div>
 
         <button

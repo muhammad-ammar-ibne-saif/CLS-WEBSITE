@@ -20,6 +20,8 @@ export async function uploadFile(file) {
 export function kindFromAccept(accept) {
   const wantsImage = accept.includes("image");
   const wantsVideo = accept.includes("video");
+  const wantsPdf = accept.includes("pdf");
+  if (wantsPdf && !wantsImage && !wantsVideo) return "pdf";
   if (wantsImage && !wantsVideo) return "image";
   if (wantsVideo && !wantsImage) return "video";
   return "";

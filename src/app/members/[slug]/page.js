@@ -1,7 +1,8 @@
+import ComingSoon from "@/components/ComingSoon";
 import { notFound } from "next/navigation";
 import SiteShell from "@/components/SiteShell";
 import Frame from "@/components/Frame";
-import { getMemberBySlug } from "@/server/queries/public";
+import { getMemberBySlug, isComingSoon } from "@/server/queries/public";
 
 export const revalidate = 300;
 
@@ -16,6 +17,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function MemberProfilePage({ params }) {
+  if (await isComingSoon("members")) return <ComingSoon pageKey="members" />;
   const { slug } = await params;
   const member = await getMemberBySlug(slug);
   if (!member) notFound();

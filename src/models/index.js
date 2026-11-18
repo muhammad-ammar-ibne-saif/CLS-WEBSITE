@@ -9,3 +9,4 @@ export { Constitution } from "./Constitution";
 export { Workshop } from "./Workshop";
 export { SemesterPlan } from "./SemesterPlan";
 export { Assignment } from "./Assignment";
+export { Magazine } from "./Magazine";

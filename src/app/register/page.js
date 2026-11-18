@@ -1,11 +1,13 @@
+import ComingSoon from "@/components/ComingSoon";
 import RegisterForm from "./RegisterForm";
 import SiteShell from "@/components/SiteShell";
-import { getPage, getSettings } from "@/server/queries/public";
+import { getPage, getSettings, isComingSoon } from "@/server/queries/public";
 
 export const metadata = { title: "Register" };
 export const revalidate = 300;
 
 export default async function RegisterPage() {
+  if (await isComingSoon("register")) return <ComingSoon pageKey="register" />;
   const [page, settings] = await Promise.all([getPage("register"), getSettings()]);
   return (
     <SiteShell showJoin={false}>

@@ -82,6 +82,8 @@ export default function MediaField({ name, label, defaultValue = "", accept = "i
             >
               {isVideoUrl(item.url) ? (
                 <video src={item.url} muted preload="metadata" />
+              ) : item.contentType === "application/pdf" ? (
+                <span className="media-pick-file">PDF · {item.filename}</span>
               ) : (
                 <img src={item.url} alt={item.filename} loading="lazy" decoding="async" />
               )}

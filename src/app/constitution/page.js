@@ -1,12 +1,14 @@
+import ComingSoon from "@/components/ComingSoon";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
-import { getConstitutions, getPage } from "@/server/queries/public";
+import { getConstitutions, getPage, isComingSoon } from "@/server/queries/public";
 
 export const metadata = { title: "Constitution" };
 
 export const revalidate = 300;
 
 export default async function ConstitutionPage() {
+  if (await isComingSoon("constitution")) return <ComingSoon pageKey="constitution" />;
   const [page, constitutions] = await Promise.all([getPage("constitution"), getConstitutions()]);
   const download = constitutions[0]?.file || "/assets/constitution-thumb.png";
 

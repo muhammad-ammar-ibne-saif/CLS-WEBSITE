@@ -23,3 +23,11 @@ Core members and Executive Council members create an account at `/staff/apply`, 
 ## Media
 
 Uploads go to GridFS. Images are resized to 2000px and converted to WebP, videos stream with range requests. Every image or video shown inside a bordered photo frame is placed in the frame window, centered and cropped to fit, so any aspect ratio works.
+
+## Page visibility (Coming soon)
+
+`/admin/visibility` lists every public page. Ticked pages show a "Coming soon" message instead of their content; untick one to put it live. Content edited elsewhere in admin is kept and appears once the page is live. By default every page except Leadership and Magazine is "Coming soon". While Register is ticked, the join banner and the navbar Register button are hidden.
+
+## Magazine
+
+Upload issues at `/admin/magazines`: a PDF (up to 150MB) plus an optional cover image. If no cover is set, the PDF's first page is used. Readers open `/magazine/<slug>` and flip through the issue in the browser (two-page spreads on wide screens, swipe on phones, zoom, full screen, download).

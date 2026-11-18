@@ -6,6 +6,7 @@ import { JoinRequest } from "@/models/JoinRequest";
 import { User } from "@/models/User";
 import { Event } from "@/models/Event";
 import { Workshop } from "@/models/Workshop";
+import { Magazine } from "@/models/Magazine";
 import { SemesterPlan } from "@/models/SemesterPlan";
 import { requireAdmin } from "@/server/dal";
 import { seedDatabase } from "@/server/seed";
@@ -21,13 +22,14 @@ async function seedNow() {
 export default async function AdminHomePage() {
   const user = await requireAdmin();
   await connectDb();
-  const [pending, members, events, workshops, plans, joins] = await Promise.all([
+  const [pending, members, events, workshops, plans, joins, magazines] = await Promise.all([
     User.countDocuments({ status: ACCOUNT_STATUS.PENDING }),
     User.countDocuments({ status: ACCOUNT_STATUS.APPROVED }),
     Event.countDocuments(),
     Workshop.countDocuments(),
     SemesterPlan.countDocuments(),
     JoinRequest.countDocuments({ status: "new" }),
+    Magazine.countDocuments(),
   ]);
 
   return (
@@ -52,6 +54,10 @@ export default async function AdminHomePage() {
         <Link className="dash-stat" href="/admin/workshops">
           <strong>{workshops}</strong>
           <span>Workshops</span>
+        </Link>
+        <Link className="dash-stat" href="/admin/magazines">
+          <strong>{magazines}</strong>
+          <span>Magazine issues</span>
         </Link>
         <Link className="dash-stat" href="/ec">
           <strong>{plans}</strong>

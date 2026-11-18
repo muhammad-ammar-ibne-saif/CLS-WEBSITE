@@ -1,7 +1,8 @@
+import ComingSoon from "@/components/ComingSoon";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteShell from "@/components/SiteShell";
-import { getWriting } from "@/server/queries/public";
+import { getWriting, isComingSoon } from "@/server/queries/public";
 
 export const revalidate = 300;
 
@@ -16,6 +17,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function WriterPage({ params }) {
+  if (await isComingSoon("writings")) return <ComingSoon pageKey="writings" />;
   const { slug } = await params;
   const writer = await getWriting(slug);
   if (!writer) notFound();

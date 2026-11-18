@@ -1,14 +1,16 @@
+import ComingSoon from "@/components/ComingSoon";
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
 import PersonCard from "@/components/PersonCard";
 import { EC_RANK_HEADINGS, EC_RANK_ORDER } from "@/config/constants";
-import { getLeadershipGroups, getPage } from "@/server/queries/public";
+import { getLeadershipGroups, getPage, isComingSoon } from "@/server/queries/public";
 
 export const metadata = { title: "Leadership" };
 export const revalidate = 300;
 
 export default async function LeadershipPage() {
+  if (await isComingSoon("leadership")) return <ComingSoon pageKey="leadership" />;
   const [page, groups] = await Promise.all([getPage("leadership"), getLeadershipGroups()]);
   const ranks = EC_RANK_ORDER.filter((rank) => groups.ec[rank].length > 0);
 

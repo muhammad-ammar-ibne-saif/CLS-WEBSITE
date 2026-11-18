@@ -1,14 +1,16 @@
+import ComingSoon from "@/components/ComingSoon";
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
 import Frame from "@/components/Frame";
-import { getPage } from "@/server/queries/public";
+import { getPage, isComingSoon } from "@/server/queries/public";
 
 export const metadata = { title: "About" };
 
 export const revalidate = 300;
 
 export default async function AboutPage() {
+  if (await isComingSoon("about")) return <ComingSoon pageKey="about" />;
   const page = await getPage("about");
   return (
     <SiteShell>

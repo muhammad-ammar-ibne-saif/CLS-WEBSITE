@@ -1,14 +1,16 @@
+import ComingSoon from "@/components/ComingSoon";
 import Link from "next/link";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
 import Frame from "@/components/Frame";
-import { getPage, getPublicMembers } from "@/server/queries/public";
+import { getPage, getPublicMembers, isComingSoon } from "@/server/queries/public";
 
 export const metadata = { title: "Members" };
 
 export const revalidate = 300;
 
 export default async function MembersPage() {
+  if (await isComingSoon("members")) return <ComingSoon pageKey="members" />;
   const [page, people] = await Promise.all([getPage("members"), getPublicMembers()]);
   return (
     <SiteShell>

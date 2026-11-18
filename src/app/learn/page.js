@@ -1,13 +1,15 @@
+import ComingSoon from "@/components/ComingSoon";
 import SiteShell from "@/components/SiteShell";
 import Ornament from "@/components/Ornament";
 import Frame from "@/components/Frame";
-import { getPage, getWorkshops } from "@/server/queries/public";
+import { getPage, getWorkshops, isComingSoon } from "@/server/queries/public";
 
 export const metadata = { title: "Workshops" };
 
 export const revalidate = 300;
 
 export default async function LearnPage() {
+  if (await isComingSoon("learn")) return <ComingSoon pageKey="learn" />;
   const [page, workshops] = await Promise.all([getPage("learn"), getWorkshops()]);
   const upcoming = workshops.filter((item) => item.kind !== "recording");
   const recordings = workshops.filter((item) => item.kind === "recording");

@@ -25,6 +25,11 @@ const SiteSettingsSchema = new mongoose.Schema(
       tiktok: { type: String, default: "https://www.tiktok.com" },
     },
     footerNote: { type: String, default: "" },
+    // Page keys that show the "Coming soon" placeholder. Left undefined (not []) so an
+    // older settings row falls back to the defaults instead of opening every page.
+    comingSoon: { type: [String], default: undefined },
+    comingSoonTitle: { type: String, default: "" },
+    comingSoonLede: { type: String, default: "" },
   },
   { timestamps: true },
 );

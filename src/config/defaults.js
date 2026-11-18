@@ -20,6 +20,11 @@ export const defaultSettings = {
     facebook: "https://www.facebook.com",
     tiktok: "https://www.tiktok.com",
   },
+  // Every public page except Leadership and Magazine starts as "Coming soon".
+  comingSoon: ["home", "about", "constitution", "members", "events", "history", "learn", "writings", "register"],
+  comingSoonTitle: "Coming Soon",
+  comingSoonLede:
+    "We are putting the finishing touches on this page. Until then, meet our leadership or read the latest CLS magazine.",
 };
 
 export const defaultPages = {
@@ -106,7 +111,15 @@ export const defaultPages = {
     title: "The People Who Keep the Room Alive",
     lede: "Approved Core and EC members. Open a portrait to read their work, memories, and the semester they served.",
   },
+  magazine: {
+    key: "magazine",
+    title: "The CLS Magazine",
+    lede: "Poetry, prose, and campus voices, collected every season. Open an issue to read it right here.",
+    headline: "All Issues",
+  },
 };
+
+export const defaultMagazines = [];
 
 export const defaultLeadership = leadership;
 export const defaultEvents = events;

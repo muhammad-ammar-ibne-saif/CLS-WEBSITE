@@ -89,6 +89,7 @@ export async function listMedia({ skip = 0, limit = 60, kind = "" } = {}) {
   await connectDb();
   const query = {};
   if (kind === "image") query.contentType = /^image\//;
+  if (kind === "pdf") query.contentType = "application/pdf";
   if (kind === "video") query.contentType = /^video\//;
   const rows = await mongoose.connection.db
     .collection("media.files")

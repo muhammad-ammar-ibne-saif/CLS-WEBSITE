@@ -6,6 +6,7 @@ import {
   defaultConstitutions,
   defaultEvents,
   defaultLeadership,
+  defaultMagazines,
   defaultPages,
   defaultSettings,
   defaultTenures,
@@ -14,6 +15,7 @@ import {
 } from "@/config/defaults";
 import { Constitution } from "@/models/Constitution";
 import { Event } from "@/models/Event";
+import { Magazine } from "@/models/Magazine";
 import { Page } from "@/models/Page";
 import { SiteSettings } from "@/models/SiteSettings";
 import { Tenure } from "@/models/Tenure";
@@ -77,6 +79,10 @@ const loadConstitutions = store("constitutions", ["constitutions"], async () =>
   (await Constitution.find().sort({ order: 1, year: 1 }).lean()).map(toPlain),
 );
 
+const loadMagazines = store("magazines", ["magazines"], async () =>
+  (await Magazine.find({ published: true }).sort({ order: 1, publishedOn: -1, createdAt: -1 }).lean()).map(toPlain),
+);
+
 const loadWorkshops = store("workshops", ["workshops"], async () =>
   (await Workshop.find({ published: true }).sort({ kind: 1, startsAt: -1, order: 1 }).lean()).map(toPlain),
 );
@@ -116,8 +122,29 @@ const loadMember = store("member", ["people"], async (slug) =>
 export async function getSettings() {
   return guarded(async () => {
     const row = await loadSettings();
-    return row ? mergeDefined(defaultSettings, row) : defaultSettings;
+    if (!row) return defaultSettings;
+    const merged = mergeDefined(defaultSettings, row);
+    // An empty list is a real choice here ("every page is live"), so keep it.
+    merged.comingSoon = Array.isArray(row.comingSoon) ? row.comingSoon : defaultSettings.comingSoon;
+    return merged;
   }, defaultSettings);
+}
+
+export async function isComingSoon(key) {
+  const settings = await getSettings();
+  return (settings.comingSoon || []).includes(key);
+}
+
+export async function getMagazines() {
+  return guarded(async () => {
+    const rows = await loadMagazines();
+    return rows.length ? rows : defaultMagazines;
+  }, defaultMagazines);
+}
+
+export async function getMagazine(slug) {
+  const list = await getMagazines();
+  return list.find((item) => item.slug === slug) || null;
 }
 
 export async function getPage(key) {
