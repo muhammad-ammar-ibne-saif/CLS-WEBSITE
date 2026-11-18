@@ -20,9 +20,12 @@ const SiteSettingsSchema = new mongoose.Schema(
     joinCta: { type: String, default: "Register Yourself Now" },
     currentSemester: { type: String, default: "" },
     socials: {
-      instagram: { type: String, default: "https://www.instagram.com" },
-      facebook: { type: String, default: "https://www.facebook.com" },
-      tiktok: { type: String, default: "https://www.tiktok.com" },
+      // Empty means "use the link from src/config/defaults.js".
+      instagram: { type: String, default: "" },
+      facebook: { type: String, default: "" },
+      tiktok: { type: String, default: "" },
+      youtube: { type: String, default: "" },
+      linkedin: { type: String, default: "" },
     },
     footerNote: { type: String, default: "" },
     // Page keys that show the "Coming soon" placeholder. Left undefined (not []) so an

@@ -16,9 +16,11 @@ export const defaultSettings = {
   joinCta: "Register Yourself Now",
   currentSemester: "Fall 2026",
   socials: {
-    instagram: "https://www.instagram.com",
-    facebook: "https://www.facebook.com",
-    tiktok: "https://www.tiktok.com",
+    instagram: "https://www.instagram.com/clslahore/",
+    youtube: "https://www.youtube.com/@comsatslahoreliterarysociety",
+    facebook: "https://www.facebook.com/CLSlahore",
+    tiktok: "https://www.tiktok.com/@clslahore",
+    linkedin: "https://www.linkedin.com/company/comsats-literary-society/",
   },
   // Every public page except Leadership and Magazine starts as "Coming soon".
   comingSoon: ["home", "about", "constitution", "members", "events", "history", "learn", "writings", "register"],

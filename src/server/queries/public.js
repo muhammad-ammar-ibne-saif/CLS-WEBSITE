@@ -119,6 +119,23 @@ const loadMember = store("member", ["people"], async (slug) =>
   ),
 );
 
+// Per-network merge: a saved link wins, but an empty one or a bare homepage
+// placeholder (older rows stored "https://www.instagram.com") falls back to the default.
+function mergeSocials(saved = {}) {
+  const socials = { ...defaultSettings.socials };
+  for (const [network, url] of Object.entries(saved || {})) {
+    const value = String(url || "").trim();
+    if (!value) continue;
+    try {
+      if (new URL(value).pathname.replace(/\/+$/, "") === "") continue;
+    } catch {
+      continue;
+    }
+    socials[network] = value;
+  }
+  return socials;
+}
+
 export async function getSettings() {
   return guarded(async () => {
     const row = await loadSettings();
@@ -126,6 +143,7 @@ export async function getSettings() {
     const merged = mergeDefined(defaultSettings, row);
     // An empty list is a real choice here ("every page is live"), so keep it.
     merged.comingSoon = Array.isArray(row.comingSoon) ? row.comingSoon : defaultSettings.comingSoon;
+    merged.socials = mergeSocials(row.socials);
     return merged;
   }, defaultSettings);
 }

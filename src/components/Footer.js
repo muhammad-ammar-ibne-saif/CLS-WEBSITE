@@ -1,5 +1,13 @@
 import Link from "next/link";
 
+const SOCIAL_LINKS = [
+  { key: "instagram", label: "Instagram" },
+  { key: "youtube", label: "YouTube" },
+  { key: "facebook", label: "Facebook" },
+  { key: "tiktok", label: "TikTok" },
+  { key: "linkedin", label: "LinkedIn" },
+];
+
 export default function Footer({ settings }) {
   const socials = settings?.socials || {};
   return (
@@ -32,9 +40,11 @@ export default function Footer({ settings }) {
           </div>
           <div className="footer-col">
             <h4>FIND US AT</h4>
-            <a href={socials.instagram || "https://www.instagram.com"} target="_blank" rel="noreferrer">Instagram</a>
-            <a href={socials.facebook || "https://www.facebook.com"} target="_blank" rel="noreferrer">Facebook</a>
-            <a href={socials.tiktok || "https://www.tiktok.com"} target="_blank" rel="noreferrer">Tiktok</a>
+            {SOCIAL_LINKS.filter(({ key }) => socials[key]).map(({ key, label }) => (
+              <a key={key} href={socials[key]} target="_blank" rel="noreferrer">
+                {label}
+              </a>
+            ))}
             {settings?.footerNote ? <p>{settings.footerNote}</p> : null}
           </div>
         </div>

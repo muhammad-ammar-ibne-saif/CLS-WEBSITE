@@ -53,6 +53,8 @@ export async function saveSettingsAction(formData) {
       instagram: formString(formData, "instagram"),
       facebook: formString(formData, "facebook"),
       tiktok: formString(formData, "tiktok"),
+      youtube: formString(formData, "youtube"),
+      linkedin: formString(formData, "linkedin"),
     },
   };
   await SiteSettings.findOneAndUpdate({ key: "global" }, payload, { upsert: true });

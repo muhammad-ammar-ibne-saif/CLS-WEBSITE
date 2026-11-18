@@ -69,6 +69,14 @@ export default async function AdminSitePage() {
           <input name="tiktok" defaultValue={settings.socials?.tiktok} />
         </label>
         <label>
+          YouTube
+          <input name="youtube" defaultValue={settings.socials?.youtube} />
+        </label>
+        <label>
+          LinkedIn
+          <input name="linkedin" defaultValue={settings.socials?.linkedin} />
+        </label>
+        <label>
           Footer note
           <textarea name="footerNote" defaultValue={settings.footerNote} />
         </label>
