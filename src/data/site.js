@@ -84,9 +84,9 @@ export const leadership = [
   { name: "Dr Saima Akhtar Chatha", role: "Faculty Advisor", image: "/assets/Mam Saima.webp" },
   { name: "M. Ammar Ibn-e-Saif", role: "President", image: "/assets/Ammar.webp" },
   { name: "Sajjad Haider", role: "Vice President", image: "/assets/sajjad.webp" },
-  { name: "Numra Ejaz", role: "General Secretary", image: "/assets/portrait-frame.webp" },
+  { name: "Numra Ejaz", role: "General Secretary", image: "/assets/numra.webp" },
   { name: "Talha Zafar", role: "Deputy General Secretary", image: "/assets/talha.webp" },
-  { name: "Qammar Abbas", role: "Finance Secretary", image: "/assets/portrait-frame.webp" },
+  { name: "Qammar Abbas", role: "Finance Secretary", image: "/assets/qammar.webp" },
   { name: "Fatima Falak Sher", role: "Social Secretary", image: "/assets/Fatima.webp" },
 ];
 

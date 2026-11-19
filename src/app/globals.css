@@ -2317,3 +2317,19 @@ a.person {
     width: calc(100% - 32px);
   }
 }
+
+/* ---------- Leadership: faculty advisor ---------- */
+
+.advisor-block {
+  margin-bottom: 24px;
+}
+
+.advisor-block .team-grid.is-solo {
+  grid-template-columns: minmax(0, 340px);
+}
+
+@media (max-width: 760px) {
+  .advisor-block .team-grid.is-solo {
+    grid-template-columns: minmax(0, 260px);
+  }
+}

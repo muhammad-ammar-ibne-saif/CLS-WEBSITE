@@ -28,10 +28,21 @@ export default async function LeadershipPage() {
 
       <section className="section" style={{ paddingTop: 40 }}>
         <div className="wrap stack">
+          {page.calligraphyImage ? (
+            <img className="calligraphy lg" src={page.calligraphyImage} alt="" loading="lazy" decoding="async" />
+          ) : null}
+
+          {groups.advisor ? (
+            <div className="rank-block advisor-block">
+              <h2 className="headline">Faculty Advisor</h2>
+              <div className="team-grid is-solo">
+                <PersonCard person={groups.advisor} />
+              </div>
+            </div>
+          ) : null}
+
           <div className="page-head">
-            {page.calligraphyImage ? (
-              <img className="calligraphy lg" src={page.calligraphyImage} alt="" loading="lazy" decoding="async" />
-            ) : null}
+            {groups.advisor ? <Ornament /> : null}
             <h2 className="headline">{page.headline}</h2>
           </div>
           <div className="team-grid">

@@ -230,12 +230,28 @@ export async function getLeadership() {
 export async function getLeadershipGroups() {
   const people = await getLeadership();
   const empty = Object.fromEntries(EC_RANK_ORDER.map((rank) => [rank, []]));
+  const defaultAdvisor = defaultLeadership.find((person) => isAdvisor(person.role));
   if (!people.length) {
-    return { core: defaultLeadership.map((person) => ({ ...person, href: null })), ec: empty, hasEc: false };
+    return {
+      advisor: defaultAdvisor ? { ...defaultAdvisor, href: null } : null,
+      core: defaultLeadership.filter((person) => !isAdvisor(person.role)).map((person) => ({ ...person, href: null })),
+      ec: empty,
+      hasEc: false,
+    };
   }
+  let advisor = null;
   const core = [];
   const ec = { ...empty };
   for (const person of people) {
+    if (!advisor && isAdvisor(person.office)) {
+      advisor = {
+        name: person.name,
+        role: person.office,
+        image: person.avatar || defaultAdvisor?.image || "",
+        href: person.slug ? `/members/${person.slug}` : null,
+      };
+      continue;
+    }
     const card = {
       name: person.name,
       role: person.office || (person.team === "ec" ? "Executive Council" : "Core Team"),
@@ -247,7 +263,13 @@ export async function getLeadershipGroups() {
     else core.push(card);
   }
   const hasEc = EC_RANK_ORDER.some((rank) => ec[rank].length > 0);
-  return { core, ec, hasEc };
+  // Without an approved advisor account, keep showing the built-in Faculty Advisor.
+  if (!advisor && defaultAdvisor) advisor = { ...defaultAdvisor, href: null };
+  return { advisor, core, ec, hasEc };
+}
+
+function isAdvisor(role) {
+  return /faculty\s*advis/i.test(role || "");
 }
 
 export async function getMemberBySlug(slug) {
